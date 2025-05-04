@@ -1,10 +1,10 @@
-package com.scrapper_project;
+package bot.bot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ScrapperProjectApplicationTests {
+class BotApplicationTests {
 
 	@Test
 	void contextLoads() {

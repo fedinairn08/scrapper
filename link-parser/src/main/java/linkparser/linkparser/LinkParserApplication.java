@@ -1,13 +1,13 @@
-package com.scrapper_project;
+package linkparser.linkparser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ScrapperProjectApplication {
+public class LinkParserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ScrapperProjectApplication.class, args);
+		SpringApplication.run(LinkParserApplication.class, args);
 	}
 
 }
