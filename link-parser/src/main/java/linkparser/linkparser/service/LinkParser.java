@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.net.URI;
 
+
 @Setter
 public abstract class LinkParser {
     protected LinkParser nextParser;
