@@ -29,6 +29,7 @@ dependencies {
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework:spring-context-indexer:6.2.6'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:3.4.5'
 }
 
 tasks.named('test') {

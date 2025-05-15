@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import scrapper.scrapper.configuration.dto.response.ApiErrorResponse;
+import scrapper.scrapper.dto.response.ApiErrorResponse;
 import scrapper.scrapper.exception.customExceptions.ChatNotFoundException;
 import scrapper.scrapper.exception.customExceptions.DuplicateChatException;
 import scrapper.scrapper.exception.customExceptions.LinkAlreadyExistsException;

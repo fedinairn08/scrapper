@@ -1,4 +1,4 @@
-package scrapper.scrapper.configuration.dto.request;
+package scrapper.scrapper.dto.request;
 
 import java.net.URI;
 

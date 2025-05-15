@@ -1,0 +1,17 @@
+app:
+  test: test
+
+spring:
+  application:
+    name: scrapper
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+default:
+  timeout: 30
+
+baseUrl:
+  github: https://api.github.com
+  stackOverflow: https://api.stackexchange.com/2.3

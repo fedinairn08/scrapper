@@ -2,10 +2,10 @@ package scrapper.scrapper.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import scrapper.scrapper.configuration.dto.request.AddLinkRequest;
-import scrapper.scrapper.configuration.dto.request.RemoveLinkRequest;
-import scrapper.scrapper.configuration.dto.response.LinkResponse;
-import scrapper.scrapper.configuration.dto.response.ListLinksResponse;
+import scrapper.scrapper.dto.request.AddLinkRequest;
+import scrapper.scrapper.dto.request.RemoveLinkRequest;
+import scrapper.scrapper.dto.response.LinkResponse;
+import scrapper.scrapper.dto.response.ListLinksResponse;
 
 import java.util.List;
 
