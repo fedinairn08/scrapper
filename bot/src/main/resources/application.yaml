@@ -1,0 +1,7 @@
+app:
+  test: test
+
+
+spring:
+  application:
+    name: bot

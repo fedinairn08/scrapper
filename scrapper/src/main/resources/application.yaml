@@ -1,5 +1,7 @@
 app:
   test: test
+  scheduler:
+    interval: PT10S  # 10 секунд
 
 spring:
   application:
