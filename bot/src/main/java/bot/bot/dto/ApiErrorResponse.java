@@ -1,4 +1,4 @@
-package bot.bot.dto.response;
+package bot.bot.dto;
 
 import java.util.List;
 

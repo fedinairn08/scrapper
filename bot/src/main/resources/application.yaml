@@ -2,6 +2,12 @@ app:
   test: test
   token: ${BOT_TOKEN}
 
+default:
+  timeout: 5
+
+baseUrl:
+  scrapper: ${SCRAPPER_URL}
+
 spring:
   application:
     name: bot
