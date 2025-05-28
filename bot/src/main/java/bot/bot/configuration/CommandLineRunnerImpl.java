@@ -17,6 +17,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final MessageHandler messageHandler;
     @Override
     public void run(String... args) {
+        bot.registerCommands();
         bot.getTelegramBot().setUpdatesListener(updates -> {
             for (Update update : updates) {
                 messageHandler.handleMessage(update);

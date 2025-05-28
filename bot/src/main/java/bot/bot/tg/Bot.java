@@ -2,7 +2,9 @@ package bot.bot.tg;
 
 import com.pengrad.telegrambot.Callback;
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.request.BaseRequest;
+import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -31,5 +35,17 @@ public class Bot {
                 log.error("Ошибка при выполнении запроса {}: {}", t, e.getMessage(), e);
             }
         });
+    }
+
+    public void registerCommands() {
+        List<BotCommand> commands = new ArrayList<>();
+        commands.add(new BotCommand("/start", "Зарегистрировать пользователя"));
+        commands.add(new BotCommand("/help", "Вывести окно с командами"));
+        commands.add(new BotCommand("/track", "Начать отслеживание ссылки"));
+        commands.add(new BotCommand("/untrack", "Прекратить отслеживание ссылки"));
+        commands.add(new BotCommand("/list", "Показать список отслеживаемых ссылок"));
+
+        SetMyCommands setCommands = new SetMyCommands(commands.toArray(new BotCommand[0]));
+        telegramBot.execute(setCommands);
     }
 }
