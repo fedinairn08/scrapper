@@ -1,4 +1,3 @@
 rootProject.name = 'scrapper-project'
-include 'bot'
-include 'bot'
+include 'bot', 'link-parser'
 

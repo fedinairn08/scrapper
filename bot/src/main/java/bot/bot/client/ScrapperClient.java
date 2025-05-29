@@ -7,6 +7,7 @@ import bot.bot.dto.scrapper.response.ListLinksResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -14,6 +15,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class ScrapperClient {
     private final WebClient scrapperWebClient;
@@ -66,7 +68,7 @@ public class ScrapperClient {
 
     public Optional<LinkResponse> addLink(long chatId, AddLinkRequest link) {
         return scrapperWebClient.post()
-                .uri(scrapperUrl + "/links")
+                .uri("/links")
                 .header("Tg-Chat-Id", String.valueOf(chatId))
                 .bodyValue(link)
                 .retrieve()
