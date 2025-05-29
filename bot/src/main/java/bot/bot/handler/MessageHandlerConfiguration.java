@@ -1,24 +1,41 @@
 package bot.bot.handler;
 
-import bot.bot.tg.Bot;
 import lombok.RequiredArgsConstructor;
+import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class MessageHandlerConfiguration {
 
-    private final Bot bot;
+    private final ApplicationContext context;
 
     @Bean
     public MessageHandler messageHandler() {
-        MessageHandler messageHandler = new StartCommandHandler(bot);
-        messageHandler.setNextHandler(new HelpCommandHandler(bot))
-                .setNextHandler(new TrackCommandHandler(bot))
-                .setNextHandler(new UntrackCommandHandler(bot))
-                .setNextHandler(new ListCommandHandler(bot))
-                .setNextHandler(new DefaultHandler(bot));
+        List<Class< ? extends MessageHandler>> handlers = new ArrayList<>(new Reflections(
+                ClasspathHelper.forClass(MessageHandler.class))
+                .getSubTypesOf(MessageHandler.class));
+
+        handlers.remove(StartCommandHandler.class);
+        handlers.remove(DefaultHandler.class);
+
+        MessageHandler messageHandler = context.getBean(StartCommandHandler.class);
+
+        Class<? extends MessageHandler> currentHandlerClass = handlers.remove(0);
+        MessageHandler currentHandler = context.getBean(currentHandlerClass);
+        messageHandler.setNextHandler(currentHandler);
+
+        for (Class< ? extends MessageHandler> handlerClass : handlers) {
+            currentHandler = currentHandler.setNextHandler(context.getBean(handlerClass));
+        }
+        currentHandler.setNextHandler(context.getBean(DefaultHandler.class));
+
         return messageHandler;
     }
 }

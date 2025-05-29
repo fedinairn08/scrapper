@@ -4,7 +4,9 @@ import bot.bot.tg.Bot;
 import bot.bot.tg.SendMessageAdapter;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelpCommandHandler extends MessageHandler {
     private String HELP_MESSAGE;
 
