@@ -1,0 +1,41 @@
+networks:
+  backend:
+
+services:
+  postgresql:
+    container_name: scrapper-postgres
+    image: postgres:latest
+    restart: on-failure
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: scrapper
+    ports:
+      - "5432:5432"
+    volumes:
+        - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d scrapper" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backend
+
+  liquibase-migrations:
+    image: liquibase:latest
+    restart: on-failure
+    depends_on:
+      - postgresql
+    command:
+      - --changelog-file=master.xml
+      - --search-path=/liquibase/changelog
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://postgresql:5432/scrapper
+      - --username=root
+      - --password=root
+      - update
+    volumes:
+      - ./migrations:/liquibase/changelog
+    networks:
+      - backend
