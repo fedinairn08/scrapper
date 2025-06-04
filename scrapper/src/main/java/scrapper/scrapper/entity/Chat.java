@@ -1,14 +1,16 @@
 package scrapper.scrapper.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "chat")
@@ -24,8 +26,7 @@ public class Chat {
     private Long chatId;
 
     @OneToMany()
-    @JoinTable(name = "links",
-            joinColumns = @JoinColumn(name = "chat"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
+    @JoinColumn(name = "chat")
+    @ToString.Exclude
     private List<Link> links;
 }

@@ -1,13 +1,17 @@
 package scrapper.scrapper.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.net.URI;
 import java.sql.Timestamp;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "link")
