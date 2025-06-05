@@ -30,4 +30,11 @@ public class ClientConfiguration {
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
+
+    @Bean("botWebClient")
+    public WebClient botClient() {
+        return WebClient.builder()
+                .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+    }
 }

@@ -24,3 +24,4 @@ default:
 baseUrl:
   github: https://api.github.com
   stackOverflow: https://api.stackexchange.com/2.3
+  scrapper: http://localhost:8080
