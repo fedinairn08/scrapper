@@ -14,10 +14,7 @@ import java.net.URISyntaxException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Repository
@@ -52,6 +49,18 @@ public class ChatRepositoryJdbcImpl implements ChatRepository {
 
 
         return jdbcTemplate.query(sql, this::mapRowToChatWithLinks);
+    }
+
+    @Override
+    public Optional<Chat> findByChatId(Long tgChatId) {
+        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
+                "FROM chat as c LEFT JOIN link as l ON c.id = l.chat WHERE c.chat_id = ?";
+
+        return Optional.of(jdbcTemplate.query(sql, rs -> {
+            List<Chat> chats = mapRowToChatWithLinks(rs);
+            return chats.isEmpty() ? null : chats.get(0);
+
+        }, tgChatId));
     }
 
     private List<Chat> mapRowToChatWithLinks(ResultSet rs) throws SQLException {

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import scrapper.scrapper.entity.Chat;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ChatRepository {
@@ -12,4 +13,6 @@ public interface ChatRepository {
     void remove(Long chatId);
 
     List<Chat> findAll();
+
+    Optional<Chat> findByChatId(Long tgChatId);
 }
