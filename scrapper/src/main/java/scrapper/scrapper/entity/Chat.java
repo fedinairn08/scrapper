@@ -6,13 +6,12 @@ import lombok.*;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "chat")
 public class Chat {
 

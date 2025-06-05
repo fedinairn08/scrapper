@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.Link;
 import scrapper.scrapper.repository.ChatRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
+@Repository
 public class ChatRepositoryJdbcImpl implements ChatRepository {
 
     private final JdbcTemplate jdbcTemplate;

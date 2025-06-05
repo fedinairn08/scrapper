@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.Link;
 import scrapper.scrapper.repository.LinkRepository;
@@ -17,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Repository
 public class LinkRepositoryJdbcImpl implements LinkRepository {
-    private JdbcTemplate jdbcTemplate;
+
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Link save(Link link) {
@@ -29,7 +32,7 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
                     "INSERT INTO link (url, chat, last_update) VALUES (?, ?, ?)",
                     new String[] {"id"});
             ps.setString(1, link.getUrl().toString());
-            ps.setObject(2, link.getChat().getChatId());
+            ps.setObject(2, link.getChat().getId());
             ps.setTimestamp(3, link.getLastUpdate());
             return ps;
         }, keyHolder);
@@ -58,7 +61,7 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
 
             Chat chat = null;
             if (chatId != null && chatTgId != null) {
-                chat = new Chat(chatId, chatTgId, new ArrayList<>()); // создаём объект Chat
+                chat = new Chat(chatId, chatTgId, new ArrayList<>());
             }
 
             return new Link(
