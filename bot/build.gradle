@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.apache.maven.plugins:maven-failsafe-plugin:3.5.3'
 	implementation 'org.reflections:reflections:0.10.2'
 	implementation project(':link-parser')
+	implementation project(':scrapper')
 }
 
 tasks.named('test') {

@@ -14,6 +14,7 @@ import java.net.URISyntaxException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,12 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
                 "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat";
 
         return jdbcTemplate.query(sql, this::mapRowToLink);
+    }
+
+    @Override
+    public void updateLastUpdate(Long linkId, Timestamp timeUpdate) {
+        String sql = "UPDATE link SET last_update = ? WHERE id = ?";
+        jdbcTemplate.update(sql, timeUpdate, linkId);
     }
 
     private Link mapRowToLink(ResultSet rs, int rowNum) throws SQLException {

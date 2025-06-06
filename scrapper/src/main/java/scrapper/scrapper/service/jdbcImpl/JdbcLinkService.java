@@ -57,4 +57,9 @@ public class JdbcLinkService implements LinkService {
             throw new RuntimeException("Links not found");
         }
     }
+
+    @Override
+    public void updateLastUpdate(Long linkId, Timestamp timeUpdate) {
+        linkRepository.updateLastUpdate(linkId, timeUpdate);
+    }
 }
