@@ -1,5 +1,6 @@
 package scrapper.scrapper.service.api;
 
+import linkparser.linkparser.model.LinkParserResult;
 import org.springframework.context.annotation.ComponentScan;
 import scrapper.scrapper.dto.LinkData;
 
