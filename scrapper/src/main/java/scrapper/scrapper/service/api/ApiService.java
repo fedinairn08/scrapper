@@ -1,10 +1,7 @@
 package scrapper.scrapper.service.api;
 
 import linkparser.linkparser.model.LinkParserResult;
-import org.springframework.context.annotation.ComponentScan;
-import scrapper.scrapper.dto.LinkData;
 
-@ComponentScan("linkparser.linkparser.service")
 public abstract class ApiService {
 
     protected ApiService nextService;
@@ -14,5 +11,5 @@ public abstract class ApiService {
         return nextService;
     }
 
-    public abstract String checkUpdate(LinkData linkData);
+    public abstract String checkUpdate(LinkParserResult linkParserResult);
 }

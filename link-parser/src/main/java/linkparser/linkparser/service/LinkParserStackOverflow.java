@@ -18,7 +18,7 @@ public class LinkParserStackOverflow extends LinkParser {
             String path = url.getPath();
             var matcher = STACKOVERFLOW_PATTERN.matcher(path);
             if (matcher.matches()) {
-                return new StackOverflowResult(Integer.parseInt(matcher.group(1)));
+                return new StackOverflowResult(url, Long.parseLong(matcher.group(1)));
             }
         }
         return parseNext(url);

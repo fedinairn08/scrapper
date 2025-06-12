@@ -1,4 +1,4 @@
-package scrapper.scrapper.enums;
+package linkparser.linkparser.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

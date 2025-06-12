@@ -22,7 +22,7 @@ class LinkParserApplicationTests {
 	public void parseValidGithubLink() throws URISyntaxException {
 		URI uri = new URI("https://github.com/fedinairn08/scrapper");
 
-		GitHubResult expected = new GitHubResult("fedinairn08", "scrapper");
+		GitHubResult expected = new GitHubResult(uri, "fedinairn08", "scrapper");
 		GitHubResult actual = (GitHubResult) linkParseService.parseLink(uri);
 
 		assertNotNull(actual);
@@ -34,7 +34,7 @@ class LinkParserApplicationTests {
 	public void parseValidStackOverflowLink() throws URISyntaxException {
 		URI uri = new URI("https://stackoverflow.com/questions/927358/how-do-i-undo-the-most-recent-local-commits-in-git");
 
-		StackOverflowResult expected = new StackOverflowResult(927358);
+		StackOverflowResult expected = new StackOverflowResult(uri, 927358L);
 		StackOverflowResult actual = (StackOverflowResult) linkParseService.parseLink(uri);
 
 		assertNotNull(actual);

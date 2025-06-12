@@ -15,4 +15,6 @@ public interface LinkRepository {
     List<Link> findAll();
 
     void updateLastUpdate(Long linkId, Timestamp timeUpdate);
+
+    List<Link> findAllOutdatedLinks(Timestamp timestamp);
 }

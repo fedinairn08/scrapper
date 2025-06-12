@@ -1,4 +1,6 @@
 package linkparser.linkparser.model;
 
-public record StackOverflowResult(int questionId) implements LinkParserResult {
+import java.net.URI;
+
+public record StackOverflowResult(URI url, Long questionId) implements LinkParserResult {
 }

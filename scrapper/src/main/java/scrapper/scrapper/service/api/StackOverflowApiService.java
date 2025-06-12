@@ -1,42 +1,41 @@
 package scrapper.scrapper.service.api;
 
+import linkparser.linkparser.model.LinkParserResult;
+import linkparser.linkparser.model.StackOverflowResult;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import scrapper.scrapper.client.StackOverflowClient;
-import scrapper.scrapper.dto.LinkData;
 import scrapper.scrapper.dto.response.StackOverflowQuestionResponse;
-import scrapper.scrapper.dto.stackoverflow.LinkDataStackOverflow;
 import scrapper.scrapper.dto.stackoverflow.StackOverflowQuestion;
-import scrapper.scrapper.enums.Site;
 
+@Service
 @RequiredArgsConstructor
 public class StackOverflowApiService extends ApiService {
 
     private final StackOverflowClient stackOverflowClient;
 
     @Override
-    public String checkUpdate(LinkData linkData) {
-        if (linkData.getSite().equals(Site.STACK_OVERFLOW)) {
-            LinkDataStackOverflow linkDataStackOverflow = (LinkDataStackOverflow) linkData;
-
+    public String checkUpdate(LinkParserResult linkParserResult) {
+        if (linkParserResult instanceof StackOverflowResult stackOverflowResult) {
             StackOverflowQuestionResponse response = stackOverflowClient.getQuestionInfo(
-                    linkDataStackOverflow.getId()
+                    stackOverflowResult.questionId()
             );
-            StackOverflowQuestion question = response.items().get(0);
+            StackOverflowQuestion question = response.items().getFirst();
 
             return "Обновление [вопроса](" +
-                    linkDataStackOverflow.getUrl() +
+                    stackOverflowResult.url() +
                     ")\n" +
                     "Последняя активность: " +
                     question.last_activity_date().toString() +
                     "\n" +
-                    "Последний обновление: " +
+                    "Последнее обновление: " +
                     question.last_edit_date().toString() +
                     "\n" +
                     "На вопрос " +
                     (question.is_answered() ? "есть ответы" : "нет ответов") +
                     "\n";
         } else if (nextService != null) {
-            return nextService.checkUpdate(linkData);
+            return nextService.checkUpdate(linkParserResult);
         } else {
             return null;
         }

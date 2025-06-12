@@ -14,4 +14,6 @@ public interface LinkService {
     List<Link> listAll(long tgChatId);
 
     void updateLastUpdate(Long linkId, Timestamp timeUpdate);
+
+    List<Link> findAllOutdatedLinks(Timestamp timestamp);
 }

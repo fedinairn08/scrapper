@@ -1,26 +1,23 @@
 package scrapper.scrapper.client;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-import scrapper.scrapper.dto.request.AddLinkRequest;
-import scrapper.scrapper.dto.response.LinkResponse;
+import org.springframework.web.client.RestClient;
+import scrapper.scrapper.dto.request.LinkUpdateRequest;
 
 @Component
 @RequiredArgsConstructor
 public class BotClient {
-    private final WebClient botWebClient;
+    private final RestClient botRestClient;
 
-    @Value("${baseUrl.scrapper}")
-    private String scrapperUrl;
+    public void updateLink(LinkUpdateRequest linkUpdateRequest) {
 
-    public LinkResponse addLink(AddLinkRequest addLinkRequest) {
-        return botWebClient.post()
-                .uri(scrapperUrl + "/links")
-                .bodyValue(addLinkRequest)
+        botRestClient.post()
+                .uri("/updates")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(linkUpdateRequest)
                 .retrieve()
-                .bodyToMono(LinkResponse.class)
-                .block();
+                .toBodilessEntity();
     }
 }

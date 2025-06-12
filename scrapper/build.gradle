@@ -28,6 +28,7 @@ dependencies {
     implementation 'org.liquibase:liquibase-core:4.32.0'
     implementation 'org.postgresql:postgresql:42.7.6'
     implementation project(':link-parser')
+    implementation 'org.reflections:reflections:0.10.2'
 }
 
 tasks.named('test') {

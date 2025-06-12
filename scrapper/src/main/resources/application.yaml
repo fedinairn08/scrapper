@@ -1,7 +1,10 @@
 app:
   test: test
   scheduler:
-    interval: PT10S  # 10 секунд
+    interval: PT60S  # 1 минута
+
+scheduler:
+  update: 86400000 # 1 день
 
 spring:
   application:
@@ -14,14 +17,14 @@ spring:
     password: root
     driver-class-name: org.postgresql.Driver
 
+server:
+  port: 8081
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
 
-default:
-  timeout: 30
-
 baseUrl:
   github: https://api.github.com
   stackOverflow: https://api.stackexchange.com/2.3
-  scrapper: http://localhost:8080
+  bot: http://localhost:8080

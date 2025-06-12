@@ -62,4 +62,9 @@ public class JdbcLinkService implements LinkService {
     public void updateLastUpdate(Long linkId, Timestamp timeUpdate) {
         linkRepository.updateLastUpdate(linkId, timeUpdate);
     }
+
+    @Override
+    public List<Link> findAllOutdatedLinks(Timestamp timestamp) {
+        return linkRepository.findAllOutdatedLinks(timestamp);
+    }
 }

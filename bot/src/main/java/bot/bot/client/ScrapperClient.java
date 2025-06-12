@@ -6,93 +6,57 @@ import bot.bot.dto.scrapper.response.LinkResponse;
 import bot.bot.dto.scrapper.response.ListLinksResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
+import org.springframework.web.client.RestClient;
 
-import java.time.Duration;
 import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class ScrapperClient {
-    private final WebClient scrapperWebClient;
-
-    @Value("${default.timeout}")
-    private Integer defaultTimeout;
-
-    @Value("${baseUrl.scrapper}")
-    private String scrapperUrl;
+    private final RestClient scrapperRestClient;
 
     public void registerChat(long chatId) {
-        scrapperWebClient.post()
-                .uri(scrapperUrl + "/tg-chat/" + chatId)
+        scrapperRestClient.post()
+                .uri("/tg-chat/" + chatId)
                 .retrieve()
-                .toBodilessEntity()
-                .timeout(Duration.ofSeconds(defaultTimeout))
-                .onErrorResume(throwable -> {
-                    log.error(throwable.getMessage());
-                    return Mono.empty();
-                })
-                .block();
+                .toBodilessEntity();
     }
 
     public void deleteChat(long chatId) {
-        scrapperWebClient.delete()
-                .uri(scrapperUrl + "/tg-chat/" + chatId)
+        scrapperRestClient.delete()
+                .uri("/tg-chat/" + chatId)
                 .retrieve()
-                .toBodilessEntity()
-                .timeout(Duration.ofSeconds(defaultTimeout))
-                .onErrorResume(throwable -> {
-                    log.error(throwable.getMessage());
-                    return Mono.empty();
-                })
-                .block();
+                .toBodilessEntity();
     }
 
     public Optional<ListLinksResponse> getLinks(long chatId) {
-        return scrapperWebClient.get()
-                .uri(scrapperUrl + "/links")
+        return Optional.of(scrapperRestClient.get()
+                .uri("/links")
                 .header("Tg-Chat-Id", String.valueOf(chatId))
                 .retrieve()
-                .bodyToMono(ListLinksResponse.class)
-                .timeout(Duration.ofSeconds(defaultTimeout))
-                .onErrorResume(throwable -> {
-                    log.error(throwable.getMessage());
-                    return Mono.empty();
-                })
-                .blockOptional();
+                .toEntity(ListLinksResponse.class)
+                .getBody());
     }
 
     public Optional<LinkResponse> addLink(long chatId, AddLinkRequest link) {
-        return scrapperWebClient.post()
+        return Optional.of(scrapperRestClient.post()
                 .uri("/links")
                 .header("Tg-Chat-Id", String.valueOf(chatId))
-                .bodyValue(link)
+                .body(link)
                 .retrieve()
-                .bodyToMono(LinkResponse.class)
-                .timeout(Duration.ofSeconds(defaultTimeout))
-                .onErrorResume(throwable -> {
-                    log.error(throwable.getMessage());
-                    return Mono.empty();
-                })
-                .blockOptional();
+                .toEntity(LinkResponse.class)
+                .getBody());
     }
 
     public Optional<LinkResponse> removeLink(long chatId, RemoveLinkRequest link) {
-        return scrapperWebClient.post()
-                .uri(scrapperUrl + "/links/delete")
+        return Optional.of(scrapperRestClient.post()
+                .uri("/links/delete")
                 .header("Tg-Chat-Id", String.valueOf(chatId))
-                .bodyValue(link)
+                .body(link)
                 .retrieve()
-                .bodyToMono(LinkResponse.class)
-                .timeout(Duration.ofSeconds(defaultTimeout))
-                .onErrorResume(throwable -> {
-                    log.error(throwable.getMessage());
-                    return Mono.empty();
-                })
-                .blockOptional();
+                .toEntity(LinkResponse.class)
+                .getBody());
     }
 }

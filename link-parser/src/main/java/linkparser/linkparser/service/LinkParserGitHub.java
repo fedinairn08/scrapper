@@ -18,7 +18,7 @@ public class LinkParserGitHub extends LinkParser {
             String path = url.getPath();
             var matcher = GITHUB_PATTERN.matcher(path);
             if (matcher.matches()) {
-                return new GitHubResult(matcher.group(1), matcher.group(2));
+                return new GitHubResult(url, matcher.group(1), matcher.group(2));
             }
         }
         return parseNext(url);

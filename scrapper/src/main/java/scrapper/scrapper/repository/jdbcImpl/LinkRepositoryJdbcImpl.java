@@ -61,8 +61,19 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
         jdbcTemplate.update(sql, timeUpdate, linkId);
     }
 
+    @Override
+    public List<Link> findAllOutdatedLinks(Timestamp timestamp) {
+        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
+                "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat WHERE l.last_update < ?";
+
+        return jdbcTemplate.query(sql, this::mapRowToLink, timestamp);
+    }
+
     private Link mapRowToLink(ResultSet rs, int rowNum) throws SQLException {
         try {
+            String rawUrl = rs.getString("url");
+            String cleanedUrl = rawUrl != null ? rawUrl.replaceAll("^\"|\"$", "") : "";
+
             Long chatId = rs.getObject("chat_id", Long.class);
             Long chatTgId = rs.getObject("chat_tg_id", Long.class);
 
@@ -73,12 +84,12 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
 
             return new Link(
                     rs.getObject("link_id", Long.class),
-                    new URI(rs.getString("url")),
+                    new URI(cleanedUrl),
                     chat,
                     rs.getTimestamp("last_update")
             );
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Invalid URL format in database: " + rs.getString("url"), e);
         }
     }
 }

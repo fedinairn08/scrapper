@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 public class ClientConfiguration {
@@ -15,25 +15,29 @@ public class ClientConfiguration {
     @Value("${baseUrl.stackOverflow}")
     private String stackoverflowBaseUrl;
 
-    @Bean("gitHubWebClient")
-    public WebClient gitHubClient() {
-        return WebClient.builder()
+    @Value("${baseUrl.bot}")
+    private String botBaseUrl;
+
+    @Bean("gitHubRestClient")
+    public RestClient gitHubClient() {
+        return RestClient.builder()
                 .baseUrl(githubBaseUrl)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
-    @Bean("stackOverflowWebClient")
-    public WebClient stackOverflowClient() {
-        return WebClient.builder()
+    @Bean("stackOverflowRestClient")
+    public RestClient stackOverflowClient() {
+        return RestClient.builder()
                 .baseUrl(stackoverflowBaseUrl)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
 
-    @Bean("botWebClient")
-    public WebClient botClient() {
-        return WebClient.builder()
+    @Bean("botRestClient")
+    public RestClient botClient() {
+        return RestClient.builder()
+                .baseUrl(botBaseUrl)
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }

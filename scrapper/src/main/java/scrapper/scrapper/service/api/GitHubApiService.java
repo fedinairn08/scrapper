@@ -1,12 +1,11 @@
 package scrapper.scrapper.service.api;
 
+import linkparser.linkparser.model.GitHubResult;
+import linkparser.linkparser.model.LinkParserResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import scrapper.scrapper.client.GitHubClient;
-import scrapper.scrapper.dto.LinkData;
-import scrapper.scrapper.dto.gitHub.LinkDataGitHub;
 import scrapper.scrapper.dto.response.GitHubRepositoryResponse;
-import scrapper.scrapper.enums.Site;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +14,14 @@ public class GitHubApiService extends ApiService {
     private final GitHubClient gitHubClient;
 
     @Override
-    public String checkUpdate(LinkData linkData) {
-        if (linkData.getSite().equals(Site.GITHUB)) {
-            LinkDataGitHub linkDataGitHub = (LinkDataGitHub) linkData;
+    public String checkUpdate(LinkParserResult linkParserResult) {
+        if (linkParserResult instanceof GitHubResult gitHubResult) {
             GitHubRepositoryResponse response = gitHubClient.getGitHubRepositoryInfo(
-                    linkDataGitHub.getUser(),
-                    linkDataGitHub.getRepository()
+                    gitHubResult.user(),
+                    gitHubResult.repo()
             );
             return "Обновление [репозитория](" +
-                    linkDataGitHub.getUrl() +
+                    gitHubResult.url() +
                     ")\n" +
                     "Последнее обновление: " +
                     response.updated_at().toString() +
@@ -32,7 +30,7 @@ public class GitHubApiService extends ApiService {
                     response.pushed_at().toString() +
                     "\n";
         } else if (nextService != null) {
-            return nextService.checkUpdate(linkData);
+            return nextService.checkUpdate(linkParserResult);
         } else {
             return null;
         }
