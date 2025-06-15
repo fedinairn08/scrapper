@@ -15,6 +15,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final Bot bot;
 
     private final MessageHandler messageHandler;
+
     @Override
     public void run(String... args) {
         bot.registerCommands();

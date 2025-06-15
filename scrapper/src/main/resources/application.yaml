@@ -24,7 +24,7 @@ springdoc:
   swagger-ui:
     path: /swagger-ui
 
-baseUrl:
-  github: https://api.github.com
-  stackOverflow: https://api.stackexchange.com/2.3
-  bot: http://localhost:8080
+client:
+  githubBaseUrl: https://api.github.com
+  stackoverflowBaseUrl: https://api.stackexchange.com/2.3
+  botBaseUrl: http://localhost:8080

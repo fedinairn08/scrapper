@@ -7,10 +7,10 @@ import bot.bot.tg.Bot;
 import bot.bot.tg.SendMessageAdapter;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import linkparser.linkparser.service.LinkParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
-import linkparser.linkparser.service.LinkParseService;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ import java.util.Optional;
 public class TrackCommandHandler extends MessageHandler {
     private final ScrapperClient scrapperClient;
 
-    private final LinkParseService linkParseService;
+    private final LinkParser linkParser;
 
-    public TrackCommandHandler(Bot bot, ScrapperClient scrapperClient, LinkParseService linkParseService) {
+    public TrackCommandHandler(Bot bot, ScrapperClient scrapperClient, LinkParser linkParser) {
         super(bot);
         this.scrapperClient = scrapperClient;
-        this.linkParseService = linkParseService;
+        this.linkParser = linkParser;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TrackCommandHandler extends MessageHandler {
         Message message = update.message();
         Long chatId = message.chat().id();
         List<String> stringUri = new ArrayList<>(List.of(message.text().split(" ")));
-        String commandMessage = stringUri.remove(0);
+        String commandMessage = stringUri.removeFirst();
 
         if ("/track".equals(commandMessage)) {
             if (stringUri.isEmpty()) {
@@ -69,7 +69,7 @@ public class TrackCommandHandler extends MessageHandler {
         for (String s : stringUris) {
             try {
                 URI uri = new URI(s);
-                if (linkParseService.parseLink(uri) != null) {
+                if (linkParser.parseUrl(uri) != null) {
                     uris.add(uri);
                 }
             } catch (Exception e) {

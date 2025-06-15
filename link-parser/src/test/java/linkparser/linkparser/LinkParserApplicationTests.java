@@ -2,7 +2,7 @@ package linkparser.linkparser;
 
 import linkparser.linkparser.model.GitHubResult;
 import linkparser.linkparser.model.StackOverflowResult;
-import linkparser.linkparser.service.LinkParseService;
+import linkparser.linkparser.service.LinkParser;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class LinkParserApplicationTests {
 
 	@Autowired
-	private LinkParseService linkParseService;
+	private LinkParser linkParser;
 
 	@Test
 	public void parseValidGithubLink() throws URISyntaxException {
 		URI uri = new URI("https://github.com/fedinairn08/scrapper");
 
 		GitHubResult expected = new GitHubResult(uri, "fedinairn08", "scrapper");
-		GitHubResult actual = (GitHubResult) linkParseService.parseLink(uri);
+		GitHubResult actual = (GitHubResult) linkParser.parseUrl(uri);
 
 		assertNotNull(actual);
 		assertEquals(expected.user(), actual.user());
@@ -35,7 +35,7 @@ class LinkParserApplicationTests {
 		URI uri = new URI("https://stackoverflow.com/questions/927358/how-do-i-undo-the-most-recent-local-commits-in-git");
 
 		StackOverflowResult expected = new StackOverflowResult(uri, 927358L);
-		StackOverflowResult actual = (StackOverflowResult) linkParseService.parseLink(uri);
+		StackOverflowResult actual = (StackOverflowResult) linkParser.parseUrl(uri);
 
 		assertNotNull(actual);
 		assertEquals(expected.questionId(), actual.questionId());
@@ -45,13 +45,13 @@ class LinkParserApplicationTests {
 	public void parseInvalidGithubLink() throws URISyntaxException {
 		URI uri = new URI("https://github.com/delete");
 
-		assertNull(linkParseService.parseLink(uri));
+		assertNull(linkParser.parseUrl(uri));
 	}
 
 	@Test
 	public void parseInvalidStackOverflowLink() throws URISyntaxException {
 		URI uri = new URI("https://stackoverflow.com/");
 
-		assertNull(linkParseService.parseLink(uri));
+		assertNull(linkParser.parseUrl(uri));
 	}
 }

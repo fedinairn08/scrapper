@@ -5,9 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import scrapper.scrapper.configuration.ApplicationConfig;
+import scrapper.scrapper.configuration.ClientConfig;
 
 @SpringBootApplication
-@EnableConfigurationProperties(ApplicationConfig.class)
+@EnableConfigurationProperties({ApplicationConfig.class, ClientConfig.class})
 @EnableScheduling
 public class ScrapperApplication {
 

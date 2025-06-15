@@ -1,6 +1,6 @@
 package scrapper.scrapper.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -8,20 +8,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @Configuration
+@RequiredArgsConstructor
 public class ClientConfiguration {
-    @Value("${baseUrl.github}")
-    private String githubBaseUrl;
 
-    @Value("${baseUrl.stackOverflow}")
-    private String stackoverflowBaseUrl;
-
-    @Value("${baseUrl.bot}")
-    private String botBaseUrl;
+    private final ClientConfig clientConfig;
 
     @Bean("gitHubRestClient")
     public RestClient gitHubClient() {
         return RestClient.builder()
-                .baseUrl(githubBaseUrl)
+                .baseUrl(clientConfig.githubBaseUrl())
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
@@ -29,7 +24,7 @@ public class ClientConfiguration {
     @Bean("stackOverflowRestClient")
     public RestClient stackOverflowClient() {
         return RestClient.builder()
-                .baseUrl(stackoverflowBaseUrl)
+                .baseUrl(clientConfig.stackoverflowBaseUrl())
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
@@ -37,7 +32,7 @@ public class ClientConfiguration {
     @Bean("botRestClient")
     public RestClient botClient() {
         return RestClient.builder()
-                .baseUrl(botBaseUrl)
+                .baseUrl(clientConfig.botBaseUrl())
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }

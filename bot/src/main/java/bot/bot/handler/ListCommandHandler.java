@@ -1,6 +1,7 @@
 package bot.bot.handler;
 
 import bot.bot.client.ScrapperClient;
+import bot.bot.dto.scrapper.response.LinkResponse;
 import bot.bot.dto.scrapper.response.ListLinksResponse;
 import bot.bot.tg.Bot;
 import bot.bot.tg.SendMessageAdapter;
@@ -25,14 +26,27 @@ public class ListCommandHandler extends MessageHandler {
     public void handleMessage(Update update) {
         Message message = update.message();
         if (message.text().equals("/list")) {
-            try{
-                Optional<ListLinksResponse> response = scrapperClient.getLinks(1);
-                response.ifPresent(linkResponse -> log.info(linkResponse.toString()));
-            } catch (Exception e) {
-                log.error(e.getMessage());
+            Optional<ListLinksResponse> response = scrapperClient.getLinks(message.chat().id());
+
+            if (response.isPresent()) {
+                ListLinksResponse listLinksResponse = response.get();
+
+                if (listLinksResponse.size() != 0) {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Сейчас отслеживаются ссылки:\n");
+                    for (LinkResponse linksResponse: response.get().links()) {
+                        sb.append(linksResponse.url().toString()).append("\n");
+                    }
+                    bot.send(new SendMessageAdapter(message.chat().id(), sb.toString()).getSendMessage());
+                }
+                else {
+                    String answer = "Сейчас не отслеживаются ссылки";
+                    bot.send(new SendMessageAdapter(message.chat().id(), answer).getSendMessage());
+                }
+            } else {
+                bot.send(new SendMessageAdapter(message.chat().id(), "Непредвиденная ошибка. Повторите позже")
+                        .getSendMessage());
             }
-            bot.send(new SendMessageAdapter(message.chat().id(), defaultMassage + "list")
-                    .getSendMessage());
         } else {
             nextHandler.handleMessage(update);
         }

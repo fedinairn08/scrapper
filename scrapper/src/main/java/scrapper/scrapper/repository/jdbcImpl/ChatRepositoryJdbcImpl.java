@@ -56,11 +56,15 @@ public class ChatRepositoryJdbcImpl implements ChatRepository {
         String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
                 "FROM chat as c LEFT JOIN link as l ON c.id = l.chat WHERE c.chat_id = ?";
 
-        return Optional.of(jdbcTemplate.query(sql, rs -> {
-            List<Chat> chats = mapRowToChatWithLinks(rs);
-            return chats.isEmpty() ? null : chats.get(0);
+        try {
+            return Optional.of(jdbcTemplate.query(sql, rs -> {
+                List<Chat> chats = mapRowToChatWithLinks(rs);
+                return chats.getFirst();
 
-        }, tgChatId));
+            }, tgChatId));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     private List<Chat> mapRowToChatWithLinks(ResultSet rs) throws SQLException {

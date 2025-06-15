@@ -1,12 +1,17 @@
 package scrapper.scrapper.service.jdbcImpl;
 
+import linkparser.linkparser.model.LinkParserResult;
+import linkparser.linkparser.service.LinkParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import scrapper.scrapper.client.BotClient;
+import scrapper.scrapper.dto.request.LinkUpdateRequest;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.Link;
 import scrapper.scrapper.repository.LinkRepository;
 import scrapper.scrapper.service.ChatService;
 import scrapper.scrapper.service.LinkService;
+import scrapper.scrapper.service.api.ApiService;
 
 import java.net.URI;
 import java.sql.Timestamp;
@@ -20,6 +25,12 @@ public class JdbcLinkService implements LinkService {
     private final LinkRepository linkRepository;
 
     private final ChatService chatService;
+
+    private final LinkParser linkParser;
+
+    private final ApiService apiService;
+
+    private final BotClient botClient;
 
     @Override
     public Link add(long tgChatId, URI url) {
@@ -66,5 +77,25 @@ public class JdbcLinkService implements LinkService {
     @Override
     public List<Link> findAllOutdatedLinks(Timestamp timestamp) {
         return linkRepository.findAllOutdatedLinks(timestamp);
+    }
+
+    @Override
+    public void updateLinks(List<Link> links) {
+        for (Link link: links) {
+            LinkParserResult linkParserResult = linkParser.parseUrl(link.getUrl());
+            String description = apiService.checkUpdate(linkParserResult);
+            sendLinkUpdate(new LinkUpdateRequest(
+                    link.getId(),
+                    link.getUrl(),
+                    description,
+                    List.of(link.getChat().getChatId())
+            ));
+            updateLastUpdate(link.getId(), new Timestamp(System.currentTimeMillis()));
+        }
+    }
+
+    @Override
+    public void sendLinkUpdate(LinkUpdateRequest updateRequest) {
+        botClient.updateLink(updateRequest);
     }
 }

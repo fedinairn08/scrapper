@@ -7,17 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/updates")
 @RequiredArgsConstructor
 public class BotController {
 
     private final Bot bot;
 
-    @PostMapping
+    @PostMapping("/updates")
     public ResponseEntity<Void> sendUpdate(@RequestBody LinkUpdate linkUpdate) {
         bot.send(new SendMessageAdapter(linkUpdate.tgChatIds().getFirst(), linkUpdate.description()).getSendMessage());
         return ResponseEntity.ok().build();

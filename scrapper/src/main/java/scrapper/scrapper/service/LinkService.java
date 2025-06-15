@@ -1,5 +1,6 @@
 package scrapper.scrapper.service;
 
+import scrapper.scrapper.dto.request.LinkUpdateRequest;
 import scrapper.scrapper.entity.Link;
 
 import java.net.URI;
@@ -16,4 +17,8 @@ public interface LinkService {
     void updateLastUpdate(Long linkId, Timestamp timeUpdate);
 
     List<Link> findAllOutdatedLinks(Timestamp timestamp);
+
+    void updateLinks(List<Link> links);
+
+    void sendLinkUpdate(LinkUpdateRequest updateRequest);
 }

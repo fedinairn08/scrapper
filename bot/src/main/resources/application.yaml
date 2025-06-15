@@ -2,8 +2,8 @@ app:
   test: test
   token: ${BOT_TOKEN}
 
-baseUrl:
-  scrapper: ${SCRAPPER_URL}
+client:
+  scrapperBaseUrl: ${SCRAPPER_URL}
 
 spring:
   application:

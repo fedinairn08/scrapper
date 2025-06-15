@@ -27,7 +27,7 @@ public class MessageHandlerConfiguration {
 
         MessageHandler messageHandler = context.getBean(StartCommandHandler.class);
 
-        Class<? extends MessageHandler> currentHandlerClass = handlers.remove(0);
+        Class<? extends MessageHandler> currentHandlerClass = handlers.removeFirst();
         MessageHandler currentHandler = context.getBean(currentHandlerClass);
         messageHandler.setNextHandler(currentHandler);
 
