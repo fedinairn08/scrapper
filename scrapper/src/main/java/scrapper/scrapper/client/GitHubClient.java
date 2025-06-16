@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import scrapper.scrapper.dto.response.GitHubRepositoryResponse;
 
-import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +38,25 @@ public class GitHubClient {
         return extractCommitCountFromHeaders(response.getHeaders());
     }
 
+    public int getBranchCount(String username, String repositoryName) {
+        ResponseEntity<Void> response = gitHubRestClient.get()
+                .uri("/repos/{username}/{repositoryName}/branches?per_page=1", username, repositoryName)
+                .retrieve()
+                .toBodilessEntity();
+
+        return extractBranchCountFromHeaders(response.getHeaders());
+    }
+
+    private int extractBranchCountFromHeaders(HttpHeaders headers) {
+        String linkHeader = headers.getFirst(HttpHeaders.LINK);
+        Pattern pattern = Pattern.compile("page=(\\d+)>; rel=\"last\"");
+        Matcher matcher = pattern.matcher(linkHeader);
+        if (matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
+    }
+
     private int extractCommitCountFromHeaders(HttpHeaders headers) {
         String linkHeader = headers.getFirst(HttpHeaders.LINK);
         Pattern pattern = Pattern.compile("page=(\\d+)>; rel=\"last\"");
@@ -61,14 +78,5 @@ public class GitHubClient {
                 .body(List.class);
 
         return commits.size();
-    }
-
-    public int getBranchCount(String username, String repositoryName) {
-        ResponseEntity<String[]> responseEntity = gitHubRestClient.get()
-                .uri("/repos/{username}/{repositoryName}/branches", username, repositoryName)
-                .retrieve()
-                .toEntity(String[].class);
-
-        return Optional.of(responseEntity.getBody()).map(Array::getLength).orElse(0);
     }
 }

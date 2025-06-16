@@ -27,19 +27,18 @@ public class GitHubApiService extends ApiService {
             );
 
             int commitCount = gitHubClient.getCommitCount(gitHubResult.user(), gitHubResult.repo());
-
-//            int branchCount = gitHubClient.getBranchCount(gitHubResult.user(), gitHubResult.repo());
+            int branchCount = gitHubClient.getBranchCount(gitHubResult.user(), gitHubResult.repo());
 
             GitHubInfo gitHubInfo = linkRepository.findGitHubInfo(link.getId());
 
             if (gitHubInfo.getLastCommitCount() == 0 && gitHubInfo.getLastBranchCount() == 0) {
                 gitHubInfo.setLastCommitCount(commitCount);
-                linkRepository.updateGitHubInfo(gitHubInfo.getId(), commitCount, 0);
+                gitHubInfo.setLastBranchCount(branchCount);
 
-//                gitHubInfo.setLastBranchCount(branchCount);
+                linkRepository.updateGitHubInfo(gitHubInfo.getId(), commitCount, branchCount);
             } else {
                 commitCount = commitCount - gitHubInfo.getLastCommitCount();
-//                branchCount = branchCount - gitHubInfo.getLastBranchCount();
+                branchCount = branchCount - gitHubInfo.getLastBranchCount();
             }
 
             return "Обновление [репозитория](" +
@@ -53,10 +52,10 @@ public class GitHubApiService extends ApiService {
                     "\n" +
                     "Количество новых коммитов: " +
                     commitCount +
+                    "\n" +
+                    "Количество новых веток: " +
+                    branchCount +
                     "\n";
-//                    "Количество новых веток: " +
-//                    branchCount +
-//                    "\n";
         } else if (nextService != null) {
             return nextService.checkUpdate(linkParserResult, link);
         } else {
