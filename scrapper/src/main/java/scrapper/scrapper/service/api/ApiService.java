@@ -1,6 +1,7 @@
 package scrapper.scrapper.service.api;
 
 import linkparser.linkparser.model.LinkParserResult;
+import scrapper.scrapper.entity.Link;
 
 public abstract class ApiService {
 
@@ -11,5 +12,5 @@ public abstract class ApiService {
         return nextService;
     }
 
-    public abstract String checkUpdate(LinkParserResult linkParserResult);
+    public abstract String checkUpdate(LinkParserResult linkParserResult, Link link);
 }

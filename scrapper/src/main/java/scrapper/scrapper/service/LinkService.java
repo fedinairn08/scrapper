@@ -21,4 +21,6 @@ public interface LinkService {
     void updateLinks(List<Link> links);
 
     void sendLinkUpdate(LinkUpdateRequest updateRequest);
+
+    void addGitHubInfo(Link link);
 }

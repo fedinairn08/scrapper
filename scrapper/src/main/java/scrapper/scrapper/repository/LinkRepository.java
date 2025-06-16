@@ -1,6 +1,7 @@
 package scrapper.scrapper.repository;
 
 import org.springframework.stereotype.Repository;
+import scrapper.scrapper.entity.GitHubInfo;
 import scrapper.scrapper.entity.Link;
 
 import java.sql.Timestamp;
@@ -17,4 +18,10 @@ public interface LinkRepository {
     void updateLastUpdate(Long linkId, Timestamp timeUpdate);
 
     List<Link> findAllOutdatedLinks(Timestamp timestamp);
+
+    void saveGitHubInfo(GitHubInfo gitHubInfo);
+
+    GitHubInfo findGitHubInfo(Long linkId);
+
+    void updateGitHubInfo(Long id, int lastCommitCount, int lastBranchCount);
 }

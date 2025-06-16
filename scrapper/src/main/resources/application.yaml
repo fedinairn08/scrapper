@@ -28,3 +28,7 @@ client:
   githubBaseUrl: https://api.github.com
   stackoverflowBaseUrl: https://api.stackexchange.com/2.3
   botBaseUrl: http://localhost:8080
+
+api:
+  github:
+    token: ${GITHUB_TOKEN}

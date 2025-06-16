@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import scrapper.scrapper.client.BotClient;
 import scrapper.scrapper.dto.request.LinkUpdateRequest;
 import scrapper.scrapper.entity.Chat;
+import scrapper.scrapper.entity.GitHubInfo;
 import scrapper.scrapper.entity.Link;
 import scrapper.scrapper.repository.LinkRepository;
 import scrapper.scrapper.service.ChatService;
@@ -83,7 +84,7 @@ public class JdbcLinkService implements LinkService {
     public void updateLinks(List<Link> links) {
         for (Link link: links) {
             LinkParserResult linkParserResult = linkParser.parseUrl(link.getUrl());
-            String description = apiService.checkUpdate(linkParserResult);
+            String description = apiService.checkUpdate(linkParserResult, link);
             sendLinkUpdate(new LinkUpdateRequest(
                     link.getId(),
                     link.getUrl(),
@@ -97,5 +98,12 @@ public class JdbcLinkService implements LinkService {
     @Override
     public void sendLinkUpdate(LinkUpdateRequest updateRequest) {
         botClient.updateLink(updateRequest);
+    }
+
+    @Override
+    public void addGitHubInfo(Link link) {
+        GitHubInfo gitHubInfo = new GitHubInfo();
+        gitHubInfo.setLink(link);
+        linkRepository.saveGitHubInfo(gitHubInfo);
     }
 }

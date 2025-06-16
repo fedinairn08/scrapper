@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import scrapper.scrapper.client.StackOverflowClient;
 import scrapper.scrapper.dto.response.StackOverflowQuestionResponse;
 import scrapper.scrapper.dto.stackoverflow.StackOverflowQuestion;
+import scrapper.scrapper.entity.Link;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class StackOverflowApiService extends ApiService {
     private final StackOverflowClient stackOverflowClient;
 
     @Override
-    public String checkUpdate(LinkParserResult linkParserResult) {
+    public String checkUpdate(LinkParserResult linkParserResult, Link link) {
         if (linkParserResult instanceof StackOverflowResult stackOverflowResult) {
             StackOverflowQuestionResponse response = stackOverflowClient.getQuestionInfo(
                     stackOverflowResult.questionId()
@@ -35,7 +36,7 @@ public class StackOverflowApiService extends ApiService {
                     (question.is_answered() ? "есть ответы" : "нет ответов") +
                     "\n";
         } else if (nextService != null) {
-            return nextService.checkUpdate(linkParserResult);
+            return nextService.checkUpdate(linkParserResult, link);
         } else {
             return null;
         }
