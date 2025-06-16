@@ -49,12 +49,15 @@ public class GitHubClient {
 
     private int extractBranchCountFromHeaders(HttpHeaders headers) {
         String linkHeader = headers.getFirst(HttpHeaders.LINK);
-        Pattern pattern = Pattern.compile("page=(\\d+)>; rel=\"last\"");
-        Matcher matcher = pattern.matcher(linkHeader);
-        if (matcher.find()) {
-            return Integer.parseInt(matcher.group(1));
+        if (linkHeader != null) {
+            Pattern pattern = Pattern.compile("page=(\\d+)>; rel=\"last\"");
+            Matcher matcher = pattern.matcher(linkHeader);
+            if (matcher.find()) {
+                return Integer.parseInt(matcher.group(1));
+            }
         }
-        return 0;
+        return 1;
+
     }
 
     private int extractCommitCountFromHeaders(HttpHeaders headers) {
