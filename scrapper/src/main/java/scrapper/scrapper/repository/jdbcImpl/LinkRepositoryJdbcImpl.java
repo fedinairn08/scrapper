@@ -5,7 +5,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.GitHubInfo;
 import scrapper.scrapper.entity.Link;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Repository
 public class LinkRepositoryJdbcImpl implements LinkRepository {
 
     private final JdbcTemplate jdbcTemplate;

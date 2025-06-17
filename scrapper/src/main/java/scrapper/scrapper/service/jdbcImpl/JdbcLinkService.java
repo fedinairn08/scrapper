@@ -3,7 +3,6 @@ package scrapper.scrapper.service.jdbcImpl;
 import linkparser.linkparser.model.LinkParserResult;
 import linkparser.linkparser.service.LinkParser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import scrapper.scrapper.client.BotClient;
 import scrapper.scrapper.dto.request.LinkUpdateRequest;
 import scrapper.scrapper.entity.Chat;
@@ -19,7 +18,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 

@@ -2,6 +2,8 @@ app:
   test: test
   scheduler:
     interval: PT60S  # 1 минута
+  database-access-type:
+    jdbc
 
 scheduler:
   update: 86400000 # 1 день

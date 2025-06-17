@@ -1,14 +1,12 @@
 package scrapper.scrapper.service.jdbcImpl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.repository.ChatRepository;
 import scrapper.scrapper.service.ChatService;
 
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
 
