@@ -29,6 +29,10 @@ public class GitHubApiService extends ApiService {
             int commitCount = gitHubClient.getCommitCount(gitHubResult.user(), gitHubResult.repo());
             int branchCount = gitHubClient.getBranchCount(gitHubResult.user(), gitHubResult.repo());
 
+            if (gitHubInfoService.find(link.getId()) == null) {
+                gitHubInfoService.add(link);
+            }
+
             GitHubInfo gitHubInfo = gitHubInfoService.find(link.getId());
 
             if (gitHubInfo.getLastCommitCount() == 0 && gitHubInfo.getLastBranchCount() == 0) {

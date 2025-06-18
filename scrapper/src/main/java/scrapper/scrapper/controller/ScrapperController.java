@@ -10,7 +10,6 @@ import scrapper.scrapper.dto.response.ListLinksResponse;
 import scrapper.scrapper.entity.Link;
 import scrapper.scrapper.mapper.LinkMapper;
 import scrapper.scrapper.service.ChatService;
-import scrapper.scrapper.service.GitHubInfoService;
 import scrapper.scrapper.service.LinkService;
 
 import java.util.List;
@@ -22,8 +21,6 @@ public class ScrapperController {
     private final ChatService chatService;
 
     private final LinkService linkService;
-
-    private final GitHubInfoService gitHubInfoService;
 
     private final LinkMapper linkMapper;
 
@@ -49,7 +46,6 @@ public class ScrapperController {
     public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") Long tgChatId,
                                                 @RequestBody AddLinkRequest request) {
         Link link = linkService.add(tgChatId, request.link());
-        gitHubInfoService.add(link);
         return ResponseEntity.ok(linkMapper.toLinkResponse(link));
     }
 
