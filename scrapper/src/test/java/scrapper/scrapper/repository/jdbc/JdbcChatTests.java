@@ -1,4 +1,4 @@
-package scrapper.scrapper.repository;
+package scrapper.scrapper.repository.jdbc;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.environment.IntegrationEnvironment;
+import scrapper.scrapper.repository.ChatRepository;
 
 import java.util.Optional;
 
@@ -25,8 +26,8 @@ public class JdbcChatTests extends IntegrationEnvironment {
 
     @BeforeAll
     public static void setTestChat() {
-        testChat = new Chat();
-        testChat.setChatId(1L);
+        testChat = new Chat()
+                .setChatId(1L);
     }
 
     @Transactional
@@ -54,8 +55,8 @@ public class JdbcChatTests extends IntegrationEnvironment {
     @Test
     public void findAllTest() {
         chatRepository.save(testChat);
-        Chat secondChat = new Chat();
-        secondChat.setChatId(2L);
+        Chat secondChat = new Chat()
+                .setChatId(2L);
         chatRepository.save(secondChat);
 
         assertEquals(2, chatRepository.findAll().size());

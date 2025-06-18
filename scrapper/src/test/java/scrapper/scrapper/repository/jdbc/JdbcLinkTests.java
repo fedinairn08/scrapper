@@ -1,4 +1,4 @@
-package scrapper.scrapper.repository;
+package scrapper.scrapper.repository.jdbc;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.Link;
+import scrapper.scrapper.repository.ChatRepository;
+import scrapper.scrapper.repository.LinkRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,14 +32,14 @@ public class JdbcLinkTests {
 
     @BeforeEach
     public void setTestLink() throws URISyntaxException {
-        Chat chat = new Chat();
-        chat.setChatId(1L);
+        Chat chat = new Chat()
+                .setChatId(1L);
         chat = chatRepository.save(chat);
 
-        testLink = new Link();
-        testLink.setUrl(new URI("http://localhost:8080"));
-        testLink.setChat(chat);
-        testLink.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        testLink = new Link()
+                .setUrl(new URI("http://localhost:8080"))
+                .setChat(chat)
+                .setLastUpdate(new Timestamp(System.currentTimeMillis()));
     }
 
     @Test
@@ -66,14 +68,14 @@ public class JdbcLinkTests {
     public void findAllTest() throws URISyntaxException {
         linkRepository.save(testLink);
 
-        Chat secondChat = new Chat();
-        secondChat.setChatId(2L);
+        Chat secondChat = new Chat()
+                .setChatId(2L);
         chatRepository.save(secondChat);
 
-        Link secondLink = new Link();
-        secondLink.setUrl(new URI("http://localhost:8080"));
-        secondLink.setChat(secondChat);
-        secondLink.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        Link secondLink = new Link()
+                .setUrl(new URI("http://localhost:8080"))
+                .setChat(secondChat)
+                .setLastUpdate(new Timestamp(System.currentTimeMillis()));
 
         linkRepository.save(secondLink);
 

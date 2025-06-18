@@ -1,4 +1,4 @@
-package scrapper.scrapper.repository;
+package scrapper.scrapper.repository.jdbc;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.Link;
+import scrapper.scrapper.repository.ChatRepository;
+import scrapper.scrapper.repository.LinkRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -31,13 +33,13 @@ public class JdbcChatAndLinkTests {
 
     @BeforeAll
     public static void setTestData() throws URISyntaxException {
-        testChat = new Chat();
-        testChat.setChatId(1L);
+        testChat = new Chat()
+                .setChatId(1L);
 
-        testLink = new Link();
-        testLink.setUrl(new URI("http://localhost:8080"));
-        testLink.setChat(testChat);
-        testLink.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+        testLink = new Link()
+                .setUrl(new URI("http://localhost:8080"))
+                .setChat(testChat)
+                .setLastUpdate(new Timestamp(System.currentTimeMillis()));
     }
 
     @Test
