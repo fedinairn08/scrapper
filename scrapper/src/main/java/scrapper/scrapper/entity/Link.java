@@ -2,6 +2,7 @@ package scrapper.scrapper.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.net.URI;
 import java.sql.Timestamp;
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
+@Accessors(chain = true)
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

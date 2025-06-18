@@ -1,6 +1,5 @@
 package scrapper.scrapper.repository;
 
-import scrapper.scrapper.entity.GitHubInfo;
 import scrapper.scrapper.entity.Link;
 
 import java.sql.Timestamp;
@@ -17,9 +16,5 @@ public interface LinkRepository {
 
     List<Link> findAllOutdatedLinks(Timestamp timestamp);
 
-    void saveGitHubInfo(GitHubInfo gitHubInfo);
-
-    GitHubInfo findGitHubInfo(Long linkId);
-
-    void updateGitHubInfo(Long id, int lastCommitCount, int lastBranchCount);
+    void deleteAllByChat_ChatId(Long chatId);
 }

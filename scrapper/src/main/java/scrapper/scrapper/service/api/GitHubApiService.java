@@ -8,7 +8,7 @@ import scrapper.scrapper.client.GitHubClient;
 import scrapper.scrapper.dto.response.GitHubRepositoryResponse;
 import scrapper.scrapper.entity.GitHubInfo;
 import scrapper.scrapper.entity.Link;
-import scrapper.scrapper.repository.LinkRepository;
+import scrapper.scrapper.service.GitHubInfoService;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +16,7 @@ public class GitHubApiService extends ApiService {
 
     private final GitHubClient gitHubClient;
 
-    private final LinkRepository linkRepository;
+    private final GitHubInfoService gitHubInfoService;
 
     @Override
     public String checkUpdate(LinkParserResult linkParserResult, Link link) {
@@ -29,13 +29,13 @@ public class GitHubApiService extends ApiService {
             int commitCount = gitHubClient.getCommitCount(gitHubResult.user(), gitHubResult.repo());
             int branchCount = gitHubClient.getBranchCount(gitHubResult.user(), gitHubResult.repo());
 
-            GitHubInfo gitHubInfo = linkRepository.findGitHubInfo(link.getId());
+            GitHubInfo gitHubInfo = gitHubInfoService.find(link.getId());
 
             if (gitHubInfo.getLastCommitCount() == 0 && gitHubInfo.getLastBranchCount() == 0) {
                 gitHubInfo.setLastCommitCount(commitCount);
                 gitHubInfo.setLastBranchCount(branchCount);
 
-                linkRepository.updateGitHubInfo(gitHubInfo.getId(), commitCount, branchCount);
+                gitHubInfoService.update(gitHubInfo.getId(), commitCount, branchCount);
             } else {
                 commitCount = commitCount - gitHubInfo.getLastCommitCount();
                 branchCount = branchCount - gitHubInfo.getLastBranchCount();

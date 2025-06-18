@@ -1,6 +1,5 @@
 package scrapper.scrapper.service;
 
-import scrapper.scrapper.dto.request.LinkUpdateRequest;
 import scrapper.scrapper.entity.Link;
 
 import java.net.URI;
@@ -10,7 +9,7 @@ import java.util.List;
 public interface LinkService {
     Link add(long tgChatId, URI url);
 
-    Link remove(long tgChatId, URI url);
+    void remove(long tgChatId, URI url);
 
     List<Link> listAll(long tgChatId);
 
@@ -18,9 +17,5 @@ public interface LinkService {
 
     List<Link> findAllOutdatedLinks(Timestamp timestamp);
 
-    void updateLinks(List<Link> links);
-
-    void sendLinkUpdate(LinkUpdateRequest updateRequest);
-
-    void addGitHubInfo(Link link);
+    void deleteAllByChat_ChatId(Long chatId);
 }

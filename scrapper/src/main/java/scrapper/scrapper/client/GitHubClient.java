@@ -74,7 +74,6 @@ public class GitHubClient {
     private int getCommitCountFromBody(HttpHeaders headers) {
         String path = headers.getFirst("X-GitHub-Request-Id");
 
-
         List<?> commits = gitHubRestClient.get()
                 .uri(path)
                 .retrieve()

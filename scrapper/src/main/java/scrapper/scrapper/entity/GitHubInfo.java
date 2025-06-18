@@ -2,12 +2,14 @@ package scrapper.scrapper.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @Builder
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "gitHubInfo")

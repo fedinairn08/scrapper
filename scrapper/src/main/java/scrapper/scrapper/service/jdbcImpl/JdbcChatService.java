@@ -14,9 +14,7 @@ public class JdbcChatService implements ChatService {
 
     @Override
     public void register(long chatId) {
-        Chat chat = new Chat();
-        chat.setChatId(chatId);
-        chatRepository.save(chat);
+        chatRepository.save(new Chat().setChatId(chatId));
     }
 
     @Override
