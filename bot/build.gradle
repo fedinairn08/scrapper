@@ -24,6 +24,7 @@ dependencies {
 	implementation 'org.reflections:reflections:0.10.2'
 	implementation project(':link-parser')
 	implementation project(':scrapper')
+	implementation 'org.springframework.boot:spring-boot-starter-amqp:3.5.0'
 }
 
 tasks.named('test') {

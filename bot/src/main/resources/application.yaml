@@ -15,3 +15,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: false
+
+rabbit:
+  queue: scrapper-queue
+  exchange: scrapper-exchange

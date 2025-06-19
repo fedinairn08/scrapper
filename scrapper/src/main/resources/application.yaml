@@ -49,3 +49,7 @@ client:
 api:
   github:
     token: ${GITHUB_TOKEN}
+
+rabbit:
+  queue: scrapper-queue
+  exchange: scrapper-exchange
