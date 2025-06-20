@@ -20,7 +20,9 @@ public class RabbitMQConfiguration {
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(rabbitMQConfig.queue()).build();
+        return QueueBuilder.durable(rabbitMQConfig.queue())
+                .withArgument("x-dead-letter-exchange", rabbitMQConfig.queue() + ".dlx")
+                .build();
     }
 
     @Bean

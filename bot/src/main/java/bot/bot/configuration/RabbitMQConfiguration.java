@@ -1,6 +1,5 @@
 package bot.bot.configuration;
 
-import bot.bot.dto.LinkUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.ClassMapper;
@@ -9,6 +8,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import scrapper.scrapper.dto.request.LinkUpdateRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +25,20 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
+    public FanoutExchange deadLetterExchange() {
+        return new FanoutExchange(rabbitMQConfig.queue() + ".dlx");
+    }
+
+    @Bean
     public Queue queue() {
-        return QueueBuilder.durable(rabbitMQConfig.queue()).build();
+        return QueueBuilder.durable(rabbitMQConfig.queue())
+                .withArgument("x-dead-letter-exchange", rabbitMQConfig.queue() + ".dlx")
+                .build();
+    }
+
+    @Bean
+    public Queue deadLetterQueue() {
+        return QueueBuilder.durable(rabbitMQConfig.queue() + ".dlq").build();
     }
 
     @Bean
@@ -35,9 +47,14 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
+    public Binding deadLetterBinding(Queue deadLetterQueue, FanoutExchange deadLetterExchange) {
+        return BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange);
+    }
+
+    @Bean
     public ClassMapper classMapper(){
         Map<String, Class<?>> mappings = new HashMap<>();
-        mappings.put("scrapper.scrapper.dto.request.LinkUpdate", LinkUpdate.class);
+        mappings.put("scrapper.scrapper.dto.request.LinkUpdateRequest", LinkUpdateRequest.class);
 
         DefaultClassMapper classMapper = new DefaultClassMapper();
         classMapper.setTrustedPackages("scrapper.scrapper.dto.request.*");
