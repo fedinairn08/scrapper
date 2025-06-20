@@ -4,6 +4,7 @@ app:
     interval: PT60S  # 1 минута
   database-access-type:
     jpa
+  use-queue: false
 
 scheduler:
   update: 86400000 # 1 день

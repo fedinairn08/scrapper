@@ -11,6 +11,7 @@ import scrapper.scrapper.enums.AccessType;
 public record ApplicationConfig(
         @NotNull String test,
         Scheduler scheduler,
-        AccessType databaseAccessType
+        AccessType databaseAccessType,
+        Boolean useQueue
 ) {
 }

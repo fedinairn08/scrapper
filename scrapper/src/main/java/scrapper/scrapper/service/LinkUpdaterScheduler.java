@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import scrapper.scrapper.client.BotClient;
 import scrapper.scrapper.dto.request.LinkUpdateRequest;
 import scrapper.scrapper.entity.Link;
 import scrapper.scrapper.service.api.ApiService;
@@ -26,7 +25,7 @@ public class LinkUpdaterScheduler {
 
     private final ApiService apiService;
 
-    private final BotClient botClient;
+    private final LinkUpdateService linkUpdateService;
 
     @Value("${scheduler.update}")
     private Integer timeLinkUpdate;
@@ -43,7 +42,7 @@ public class LinkUpdaterScheduler {
         for (Link link: links) {
             LinkParserResult linkParserResult = linkParser.parseUrl(link.getUrl());
             String description = apiService.checkUpdate(linkParserResult, link);
-            sendLinkUpdate(new LinkUpdateRequest(
+            linkUpdateService.sendLinkUpdate(new LinkUpdateRequest(
                     link.getId(),
                     link.getUrl(),
                     description,
@@ -51,9 +50,5 @@ public class LinkUpdaterScheduler {
             ));
             linkService.updateLastUpdate(link.getId(), new Timestamp(System.currentTimeMillis()));
         }
-    }
-
-    public void sendLinkUpdate(LinkUpdateRequest updateRequest) {
-        botClient.updateLink(updateRequest);
     }
 }
