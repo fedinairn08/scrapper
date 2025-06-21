@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'scrapper/**'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - '.github/workflows/scrapper.yml'
 
 jobs:
   build:
@@ -13,16 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
-        working-directory: scrapper/
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
-        working-directory: scrapper/
+      - name: Build scrapper module with Gradle
+        run: ./gradlew :scrapper:build
