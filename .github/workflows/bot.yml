@@ -19,10 +19,5 @@ jobs:
             java-version: '17'
             distribution: 'temurin'
 
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
-        working-directory: bot/
-
       - name: Build with Gradle
         run: ./gradlew build
-        working-directory: bot/
