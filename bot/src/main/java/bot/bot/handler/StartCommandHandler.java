@@ -21,14 +21,36 @@ public class StartCommandHandler extends MessageHandler {
     @Override
     public void handleMessage(Update update) {
         Message message = update.message();
-        if (message.text().equals("/start")) {
-            try {
-                scrapperClient.registerChat(1);
-            } catch (Exception e) {
-                log.error(e.getMessage());
+
+        String text = message.text().trim();
+        String[] parts = text.split(" ");
+
+        String command = parts[0];
+
+        if ("/start".equals(command)) {
+            if (parts.length == 1) {
+                bot.send(new SendMessageAdapter(message.chat().id(),
+                        "Чтобы зарегистрировать пользователя, отправьте команду /start с id чата пользователя, " +
+                                "разделёнными пробелами."
+                ).getSendMessage());
+            } else {
+                try {
+                    long chatId = Long.parseLong(parts[1]);
+                    scrapperClient.registerChat(chatId);
+                    bot.send(new SendMessageAdapter(message.chat().id(), "Зарегистрирован чат с ID: " + chatId)
+                            .getSendMessage());
+                } catch (NumberFormatException e) {
+                    log.error("Некорректный ID чата: {}", parts[1], e);
+                    bot.send(new SendMessageAdapter(message.chat().id(),
+                            "ID чата должен быть числом: " + parts[1])
+                            .getSendMessage());
+                } catch (Exception e) {
+                    log.error("Ошибка регистрации чата: {}", e.getMessage(), e);
+                    bot.send(new SendMessageAdapter(message.chat().id(),
+                            "Не удалось зарегистрировать чат: " + parts[1])
+                            .getSendMessage());
+                }
             }
-            bot.send(new SendMessageAdapter(message.chat().id(), defaultMassage + "start")
-                    .getSendMessage());
         } else {
             nextHandler.handleMessage(update);
         }

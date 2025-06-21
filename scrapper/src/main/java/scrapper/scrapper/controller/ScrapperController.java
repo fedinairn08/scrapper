@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import scrapper.scrapper.dto.request.AddLinkRequest;
-import scrapper.scrapper.dto.request.RemoveLinkRequest;
 import scrapper.scrapper.dto.response.LinkResponse;
 import scrapper.scrapper.dto.response.ListLinksResponse;
 import scrapper.scrapper.entity.Link;
@@ -12,6 +11,7 @@ import scrapper.scrapper.mapper.LinkMapper;
 import scrapper.scrapper.service.ChatService;
 import scrapper.scrapper.service.LinkService;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -49,10 +49,10 @@ public class ScrapperController {
         return ResponseEntity.ok(linkMapper.toLinkResponse(link));
     }
 
-    @DeleteMapping("/links")
+    @DeleteMapping("/links/delete")
     public ResponseEntity<Void> removeLink(@RequestHeader("Tg-Chat-Id") Long tgChatId,
-                                           @RequestBody RemoveLinkRequest request) {
-        linkService.remove(tgChatId, request.link());
+                                           @RequestParam("url") URI url) {
+        linkService.remove(tgChatId, url);
         return ResponseEntity.ok().build();
     }
 }

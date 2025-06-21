@@ -37,6 +37,7 @@ public class TrackCommandHandler extends MessageHandler {
         Long chatId = message.chat().id();
         List<String> stringUri = new ArrayList<>(List.of(message.text().split(" ")));
         String commandMessage = stringUri.removeFirst();
+        int successCount = 0;
 
         if ("/track".equals(commandMessage)) {
             if (stringUri.isEmpty()) {
@@ -47,15 +48,24 @@ public class TrackCommandHandler extends MessageHandler {
             } else {
                 List<URI> urls = parseUris(stringUri);
                 StringBuilder sb = new StringBuilder();
-                sb.append(String.format("Добавлено %d из %d ссылок", urls.size(), stringUri.size()))
-                        .append("\n");
+
                 if (!urls.isEmpty()) {
                     sb.append("Добавлены следующие ссылки:\n");
                     for (URI uri : urls) {
                         Optional<LinkResponse> response = scrapperClient.addLink(chatId, new AddLinkRequest(uri));
                         response.ifPresent(linkResponse -> sb.append(linkResponse.url().toString()));
+                        successCount++;
                     }
                 }
+
+                String summary = String.format(
+                        "Добавлено %d из %d ссылок\n",
+                        successCount,
+                        urls.size()
+                );
+
+                sb.insert(0, summary);
+
                 bot.send(new SendMessageAdapter(chatId, sb.toString())
                         .getSendMessage());
             }
