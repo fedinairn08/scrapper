@@ -53,3 +53,39 @@ services:
       - "5672:5672"
     networks:
       - backend
+
+  bot:
+    container_name: bot_container
+    image: bot_image
+    build:
+      context: .
+      dockerfile: ./bot/Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../env/bot.env
+    networks:
+      - backend
+    deploy:
+      restart_policy:
+        delay: 5s
+        condition: on-failure
+        max_attempts: 5
+
+  scrapper:
+    container_name: scrapper_container
+    image: scrapper_image
+    build:
+      context: .
+      dockerfile: ./scrapper/Dockerfile
+    ports:
+      - "8081:8081"
+    env_file:
+      - ../env/scrapper.env
+    networks:
+      - backend
+    deploy:
+      restart_policy:
+        delay: 5s
+        condition: on-failure
+        max_attempts: 5

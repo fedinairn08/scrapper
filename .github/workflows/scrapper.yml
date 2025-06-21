@@ -1,0 +1,28 @@
+name: scrapper CI/CD
+
+on:
+  push:
+    paths:
+      - 'scrapper/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+        working-directory: scrapper/
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        working-directory: scrapper/

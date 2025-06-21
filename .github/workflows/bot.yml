@@ -1,0 +1,28 @@
+name: bot CI/CD
+
+on:
+  push:
+    paths:
+      - 'bot/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+            java-version: '17'
+            distribution: 'temurin'
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+        working-directory: bot/
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        working-directory: bot/
