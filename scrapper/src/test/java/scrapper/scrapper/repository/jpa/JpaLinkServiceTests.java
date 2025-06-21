@@ -34,7 +34,7 @@ public class JpaLinkServiceTests extends IntegrationEnvironment {
     @BeforeEach
     public void setTestLink() throws URISyntaxException {
         testLink = new Link()
-                .setUrl(new URI("http://localhost:8080"))
+                .setUrl(new URI("https://github.com/fedinairn08/Translator-Service"))
                 .setLastUpdate(new Timestamp(400000L));
         testChat = new Chat()
                 .setId(1L)

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.environment.IntegrationEnvironment;
 import scrapper.scrapper.repository.ChatRepository;
+import scrapper.scrapper.repository.jdbcImpl.ChatRepositoryJdbcImpl;
 
 import java.util.Optional;
 
@@ -16,7 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@SpringBootTest(classes = {
+        IntegrationEnvironment.IntegrationEnvironmentConfiguration.class,
+        ChatRepositoryJdbcImpl.class,
+})
 public class JdbcChatTests extends IntegrationEnvironment {
 
     private static Chat testChat;

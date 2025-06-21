@@ -8,8 +8,11 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
 import scrapper.scrapper.entity.Link;
+import scrapper.scrapper.environment.IntegrationEnvironment;
 import scrapper.scrapper.repository.ChatRepository;
 import scrapper.scrapper.repository.LinkRepository;
+import scrapper.scrapper.repository.jdbcImpl.ChatRepositoryJdbcImpl;
+import scrapper.scrapper.repository.jdbcImpl.LinkRepositoryJdbcImpl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,8 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-public class JdbcLinkTests {
+@SpringBootTest(classes = {
+        IntegrationEnvironment.IntegrationEnvironmentConfiguration.class,
+        LinkRepositoryJdbcImpl.class,
+        ChatRepositoryJdbcImpl.class,
+})
+public class JdbcLinkTests extends IntegrationEnvironment {
 
     private Link testLink;
 
