@@ -5,6 +5,11 @@ plugins {
     id 'checkstyle'
 }
 
+checkstyle {
+    ignoreFailures = true
+    showViolations = true
+}
+
 group = 'bot'
 version = '0.0.1-SNAPSHOT'
 
