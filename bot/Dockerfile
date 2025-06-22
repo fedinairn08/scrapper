@@ -1,4 +1,4 @@
-FROM gradle:8.4-jdk17-alpine AS builder
+FROM gradle:8.4-jdk21-alpine AS builder
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ COPY . .
 
 RUN gradle :bot:build --no-daemon -x test
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 COPY --from=builder /app/bot/build/libs/bot-*.jar ./app.jar
