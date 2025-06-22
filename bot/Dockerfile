@@ -1,22 +1,21 @@
-FROM eclipse-temurin:17-jdk-alpine as builder
-WORKDIR /opt/app
+FROM gradle:8.4-jdk17-alpine AS builder
 
-COPY scrapper ./scrapper
-COPY link-parser ./link-parser
-COPY bot ./bot
+WORKDIR /app
 
-COPY settings.gradle.kts build.gradle.kts ./
-COPY gradle.properties ./gradle.properties
+COPY build.gradle settings.gradle ./
 COPY gradle ./gradle
-COPY .gitignore ./
+COPY bot/build.gradle ./bot/
+COPY link-parser/build.gradle ./link-parser/
 
-RUN chmod +x ./gradlew && \
-    ./gradlew build --no-daemon --no-build-cache --parallel -p bot
+RUN gradle downloadDependencies
+
+COPY . .
+
+RUN gradle :bot:build --no-daemon
 
 FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
 
-WORKDIR /opt/app
+COPY --from=builder /app/bot/build/libs/bot-*.jar ./app.jar
 
-COPY --from=builder /opt/app/bot/build/libs/*.jar ./app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
