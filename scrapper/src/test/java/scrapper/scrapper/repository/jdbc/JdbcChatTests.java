@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
         IntegrationEnvironment.IntegrationEnvironmentConfiguration.class,
         ChatRepositoryJdbcImpl.class,
 })
-public class JdbcChatTests extends IntegrationEnvironment {
+public class JdbcChatTests {
 
     private static Chat testChat;
 

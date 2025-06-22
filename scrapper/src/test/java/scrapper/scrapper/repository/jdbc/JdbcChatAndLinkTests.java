@@ -24,10 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = {
+        IntegrationEnvironment.IntegrationEnvironmentConfiguration.class,
         ChatRepositoryJdbcImpl.class,
         LinkRepositoryJdbcImpl.class
 })
-public class JdbcChatAndLinkTests extends IntegrationEnvironment {
+public class JdbcChatAndLinkTests {
     private static Chat testChat;
     private static Link testLink;
 
