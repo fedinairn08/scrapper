@@ -7,9 +7,11 @@ COPY gradle ./gradle
 COPY bot/build.gradle ./bot/
 COPY link-parser/build.gradle ./link-parser/
 
+RUN gradle :bot:dependencies --no-daemon
+
 COPY . .
 
-RUN gradle :bot:build --no-daemon
+RUN gradle :bot:build --no-daemon -x test
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
