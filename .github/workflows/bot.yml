@@ -8,6 +8,10 @@ on:
       - 'settings.gradle'
       - '.github/workflows/bot.yml'
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: bot_app
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,3 +31,16 @@ jobs:
 
       - name: Build bot module with Gradle
         run: ./gradlew :bot:build
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -f ./bot/Dockerfile -t ${{ env.REGISTRY}}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest .
+
+      - name: Push Docker image
+        run: docker push ${{ env.REGISTRY}}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest
