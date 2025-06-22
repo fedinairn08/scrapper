@@ -62,4 +62,4 @@ jobs:
             run: chmod +x gradlew
 
           - name: Run Checkstyle
-            run: ./gradlew checkstyle
+            run: ./gradlew :bot:checkstyleMain
