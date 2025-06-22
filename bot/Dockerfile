@@ -4,8 +4,9 @@ WORKDIR /app
 
 COPY build.gradle settings.gradle ./
 COPY gradle ./gradle
-COPY bot/build.gradle ./bot/
-COPY link-parser/build.gradle ./link-parser/
+COPY scrapper ./scrapper
+COPY link-parser ./link-parser
+COPY bot ./bot
 
 RUN gradle :bot:dependencies --no-daemon
 
