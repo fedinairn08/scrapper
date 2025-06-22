@@ -16,7 +16,7 @@ public class ScrapperQueueListener {
     private final Bot bot;
 
     @RabbitHandler
-    public void receiver(LinkUpdateRequest update) {
+    public void receiver(final LinkUpdateRequest update) {
         bot.send(new SendMessageAdapter(update.tgChatIds().getFirst(), update.description()).getSendMessage());
     }
 }

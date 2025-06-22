@@ -16,7 +16,7 @@ public class BotController {
     private final Bot bot;
 
     @PostMapping("/updates")
-    public ResponseEntity<Void> sendUpdate(@RequestBody LinkUpdate linkUpdate) {
+    public ResponseEntity<Void> sendUpdate(final @RequestBody LinkUpdate linkUpdate) {
         bot.send(new SendMessageAdapter(linkUpdate.tgChatIds().getFirst(), linkUpdate.description()).getSendMessage());
         return ResponseEntity.ok().build();
     }

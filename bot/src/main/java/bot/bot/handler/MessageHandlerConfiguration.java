@@ -18,7 +18,7 @@ public class MessageHandlerConfiguration {
 
     @Bean
     public MessageHandler messageHandler() {
-        List<Class< ? extends MessageHandler>> handlers = new ArrayList<>(new Reflections(
+        List<Class<? extends MessageHandler>> handlers = new ArrayList<>(new Reflections(
                 ClasspathHelper.forClass(MessageHandler.class))
                 .getSubTypesOf(MessageHandler.class));
 
@@ -31,7 +31,7 @@ public class MessageHandlerConfiguration {
         MessageHandler currentHandler = context.getBean(currentHandlerClass);
         messageHandler.setNextHandler(currentHandler);
 
-        for (Class< ? extends MessageHandler> handlerClass : handlers) {
+        for (Class<? extends MessageHandler> handlerClass : handlers) {
             currentHandler = currentHandler.setNextHandler(context.getBean(handlerClass));
         }
         currentHandler.setNextHandler(context.getBean(DefaultHandler.class));

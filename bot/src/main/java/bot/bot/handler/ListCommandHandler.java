@@ -17,13 +17,13 @@ import java.util.Optional;
 public class ListCommandHandler extends MessageHandler {
     private final ScrapperClient scrapperClient;
 
-    public ListCommandHandler(Bot bot, ScrapperClient scrapperClient) {
+    public ListCommandHandler(final Bot bot, final ScrapperClient scrapperClient) {
         super(bot);
         this.scrapperClient = scrapperClient;
     }
 
     @Override
-    public void handleMessage(Update update) {
+    public void handleMessage(final Update update) {
         Message message = update.message();
         if (message.text().equals("/list")) {
             Optional<ListLinksResponse> response = scrapperClient.getLinks(message.chat().id());
@@ -38,8 +38,7 @@ public class ListCommandHandler extends MessageHandler {
                         sb.append(linksResponse.url().toString()).append("\n");
                     }
                     bot.send(new SendMessageAdapter(message.chat().id(), sb.toString()).getSendMessage());
-                }
-                else {
+                } else {
                     String answer = "Сейчас не отслеживаются ссылки";
                     bot.send(new SendMessageAdapter(message.chat().id(), answer).getSendMessage());
                 }

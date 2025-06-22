@@ -22,15 +22,15 @@ import java.util.List;
 public class Bot {
     private final TelegramBot telegramBot;
 
-    public <T extends BaseRequest<T, R>, R extends BaseResponse> void send(T request) {
+    public <T extends BaseRequest<T, R>, R extends BaseResponse> void send(final T request) {
         telegramBot.execute(request, new Callback<T, R>() {
             @Override
-            public void onResponse(T t, R r) {
+            public void onResponse(final T t, final R r) {
                 log.info("Успешный ответ на запрос: {}", t);
             }
 
             @Override
-            public void onFailure(T t, IOException e) {
+            public void onFailure(final T t, final IOException e) {
                 System.out.println("onFailure");
                 log.error("Ошибка при выполнении запроса {}: {}", t, e.getMessage(), e);
             }

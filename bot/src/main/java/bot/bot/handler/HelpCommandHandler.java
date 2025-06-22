@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HelpCommandHandler extends MessageHandler {
-    private String HELP_MESSAGE;
+    private String helpMessage;
 
-    public HelpCommandHandler(Bot bot) {
+    public HelpCommandHandler(final Bot bot) {
         super(bot);
     }
 
     @Override
-    public void handleMessage(Update update) {
+    public void handleMessage(final Update update) {
         Message message = update.message();
         if (message.text().equals("/help")) {
             bot.send(new SendMessageAdapter(message.chat().id(), getHelpMessage())
@@ -26,8 +26,8 @@ public class HelpCommandHandler extends MessageHandler {
     }
 
     private String getHelpMessage() {
-        if (HELP_MESSAGE == null) {
-            HELP_MESSAGE = """
+        if (helpMessage == null) {
+            helpMessage = """
                     /start -- зарегистрировать пользователя
                     /help -- вывести окно с командами
                     /track -- начать отслеживание ссылки
@@ -35,6 +35,6 @@ public class HelpCommandHandler extends MessageHandler {
                     /list -- показать список отслеживаемых ссылок
                     """;
         }
-        return HELP_MESSAGE;
+        return helpMessage;
     }
 }

@@ -17,21 +17,21 @@ import java.util.Optional;
 public class ScrapperClient {
     private final RestClient scrapperRestClient;
 
-    public void registerChat(long chatId) {
+    public void registerChat(final long chatId) {
         scrapperRestClient.post()
                 .uri("/tg-chat/" + chatId)
                 .retrieve()
                 .toBodilessEntity();
     }
 
-    public void deleteChat(long chatId) {
+    public void deleteChat(final long chatId) {
         scrapperRestClient.delete()
                 .uri("/tg-chat/" + chatId)
                 .retrieve()
                 .toBodilessEntity();
     }
 
-    public Optional<ListLinksResponse> getLinks(long chatId) {
+    public Optional<ListLinksResponse> getLinks(final long chatId) {
         return Optional.of(scrapperRestClient.get()
                 .uri("/links")
                 .header("Tg-Chat-Id", String.valueOf(chatId))
@@ -40,7 +40,7 @@ public class ScrapperClient {
                 .getBody());
     }
 
-    public Optional<LinkResponse> addLink(long chatId, AddLinkRequest link) {
+    public Optional<LinkResponse> addLink(final long chatId, final AddLinkRequest link) {
         return Optional.of(scrapperRestClient.post()
                 .uri("/links")
                 .header("Tg-Chat-Id", String.valueOf(chatId))
@@ -50,7 +50,7 @@ public class ScrapperClient {
                 .getBody());
     }
 
-    public boolean removeLink(long chatId, URI uri) {
+    public boolean removeLink(final long chatId, final URI uri) {
         return scrapperRestClient.delete()
                 .uri(uriBuilder -> uriBuilder
                         .path("/links/delete")

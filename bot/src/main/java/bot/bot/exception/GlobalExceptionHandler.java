@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleException(Exception ex, WebRequest request) {
+    public ResponseEntity<ApiErrorResponse> handleException(final Exception ex, final WebRequest request) {
         return ResponseEntity.badRequest().body(
                 new ApiErrorResponse(
                     request.getDescription(false),

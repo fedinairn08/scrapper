@@ -25,14 +25,14 @@ public class TrackCommandHandler extends MessageHandler {
 
     private final LinkParser linkParser;
 
-    public TrackCommandHandler(Bot bot, ScrapperClient scrapperClient, LinkParser linkParser) {
+    public TrackCommandHandler(final Bot bot, final ScrapperClient scrapperClient, final LinkParser linkParser) {
         super(bot);
         this.scrapperClient = scrapperClient;
         this.linkParser = linkParser;
     }
 
     @Override
-    public void handleMessage(Update update) {
+    public void handleMessage(final Update update) {
         Message message = update.message();
         Long chatId = message.chat().id();
         List<String> stringUri = new ArrayList<>(List.of(message.text().split(" ")));
@@ -74,7 +74,7 @@ public class TrackCommandHandler extends MessageHandler {
         }
     }
 
-    private List<URI> parseUris(List<String> stringUris) {
+    private List<URI> parseUris(final List<String> stringUris) {
         List<URI> uris = new ArrayList<>();
         for (String s : stringUris) {
             try {

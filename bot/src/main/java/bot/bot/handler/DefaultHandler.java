@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 final class DefaultHandler extends MessageHandler {
-    public DefaultHandler(Bot bot) {
+    DefaultHandler(final Bot bot) {
         super(bot);
     }
 
     @Override
-    public void handleMessage(Update update) {
+    public void handleMessage(final Update update) {
         bot.send(new SendMessageAdapter(update.message().chat().id(), "Нет подходящего обработчика")
                 .getSendMessage()
         );

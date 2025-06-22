@@ -6,7 +6,7 @@ import com.pengrad.telegrambot.request.SendMessage;
 public class SendMessageAdapter {
     private final SendMessage message;
 
-    public SendMessageAdapter(Long chatId, String text) {
+    public SendMessageAdapter(final Long chatId, final String text) {
         this.message = new SendMessage(chatId, text)
                 .parseMode(ParseMode.Markdown);
     }

@@ -18,13 +18,13 @@ import java.util.List;
 public class UntrackCommandHandler extends MessageHandler {
     private final ScrapperClient scrapperClient;
 
-    public UntrackCommandHandler(Bot bot, ScrapperClient scrapperClient) {
+    public UntrackCommandHandler(final Bot bot, final ScrapperClient scrapperClient) {
         super(bot);
         this.scrapperClient = scrapperClient;
     }
 
     @Override
-    public void handleMessage(Update update) {
+    public void handleMessage(final Update update) {
         Message message = update.message();
         Long chatId = message.chat().id();
         String text = message.text().trim();
@@ -35,8 +35,9 @@ public class UntrackCommandHandler extends MessageHandler {
 
         if ("/untrack".equals(command)) {
             if (parts.isEmpty()) {
-                String helpMessage = "Чтобы удалить ссылку, отправьте команду /untrack с нужными ссылками, " +
-                        "разделёнными пробелами.";
+                String helpMessage = "Чтобы удалить ссылку, отправьте команду /untrack с нужными ссылками, "
+                    +
+                    "разделёнными пробелами.";
                 bot.send(new SendMessageAdapter(chatId, helpMessage).getSendMessage());
                 return;
             }
@@ -77,7 +78,7 @@ public class UntrackCommandHandler extends MessageHandler {
         }
     }
 
-    private List<URI> parseUris(List<String> strings) {
+    private List<URI> parseUris(final List<String> strings) {
         List<URI> result = new ArrayList<>();
         for (String s : strings) {
             try {

@@ -8,8 +8,6 @@ public abstract class MessageHandler {
 
     protected Bot bot;
 
-    protected final String defaultMassage = "Команда обработана: ";
-
     public MessageHandler(Bot bot) {
         this.bot = bot;
     }

@@ -42,17 +42,17 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public Binding binding(DirectExchange directExchange, Queue queue) {
+    public Binding binding(final DirectExchange directExchange, final Queue queue) {
         return BindingBuilder.bind(queue).to(directExchange).with(rabbitMQConfig.queue());
     }
 
     @Bean
-    public Binding deadLetterBinding(Queue deadLetterQueue, FanoutExchange deadLetterExchange) {
+    public Binding deadLetterBinding(final Queue deadLetterQueue, final FanoutExchange deadLetterExchange) {
         return BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange);
     }
 
     @Bean
-    public ClassMapper classMapper(){
+    public ClassMapper classMapper() {
         Map<String, Class<?>> mappings = new HashMap<>();
         mappings.put("scrapper.scrapper.dto.request.LinkUpdateRequest", LinkUpdateRequest.class);
 
@@ -63,7 +63,7 @@ public class RabbitMQConfiguration {
     }
 
     @Bean
-    public MessageConverter jsonMessageConverter(ClassMapper classMapper) {
+    public MessageConverter jsonMessageConverter(final ClassMapper classMapper) {
         Jackson2JsonMessageConverter jsonConverter = new Jackson2JsonMessageConverter();
         jsonConverter.setClassMapper(classMapper);
         return jsonConverter;

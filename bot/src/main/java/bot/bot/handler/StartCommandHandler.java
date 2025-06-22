@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 public class StartCommandHandler extends MessageHandler {
     private final ScrapperClient scrapperClient;
 
-    public StartCommandHandler(Bot bot, ScrapperClient scrapperClient) {
+    public StartCommandHandler(final Bot bot, final ScrapperClient scrapperClient) {
         super(bot);
         this.scrapperClient = scrapperClient;
     }
 
     @Override
-    public void handleMessage(Update update) {
+    public void handleMessage(final Update update) {
         Message message = update.message();
 
         String text = message.text().trim();
@@ -30,8 +30,9 @@ public class StartCommandHandler extends MessageHandler {
         if ("/start".equals(command)) {
             if (parts.length == 1) {
                 bot.send(new SendMessageAdapter(message.chat().id(),
-                        "Чтобы зарегистрировать пользователя, отправьте команду /start с id чата пользователя, " +
-                                "разделёнными пробелами."
+                        "Чтобы зарегистрировать пользователя, отправьте команду /start с id чата пользователя, "
+                            +
+                            "разделёнными пробелами."
                 ).getSendMessage());
             } else {
                 try {
