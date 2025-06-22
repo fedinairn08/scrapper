@@ -37,7 +37,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GIT_TOKEN }}
 
       - name: Build Docker image
         run: docker build -f ./bot/Dockerfile -t ${{ env.REGISTRY}}/${{ github.actor }}/${{ env.IMAGE_NAME }}:latest .
