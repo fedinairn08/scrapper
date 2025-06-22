@@ -1,9 +1,12 @@
 package scrapper.scrapper.repository.jdbc;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
@@ -28,9 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         ChatRepositoryJdbcImpl.class,
         LinkRepositoryJdbcImpl.class
 })
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JdbcChatAndLinkTests {
     private static Chat testChat;
-    private static Link testLink;
 
     @Autowired
     private ChatRepository chatRepository;
@@ -38,24 +41,39 @@ public class JdbcChatAndLinkTests {
     @Autowired
     private LinkRepository linkRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @BeforeEach
+    public void cleanDatabase() {
+        jdbcTemplate.update("DELETE FROM link");
+        jdbcTemplate.update("DELETE FROM chat");
+    }
+
     @BeforeAll
-    public static void setTestData() throws URISyntaxException {
+    public static void setTestData() {
         testChat = new Chat()
                 .setChatId(1L);
-
-        testLink = new Link()
-                .setUrl(new URI("http://localhost:8080"))
-                .setChat(testChat)
-                .setLastUpdate(new Timestamp(System.currentTimeMillis()));
     }
 
     @Test
     @Transactional
     @Rollback
-    public void cascadeDeleteChatAndLinkTest() {
+    public void cascadeDeleteChatAndLinkTest() throws URISyntaxException {
         chatRepository.save(testChat);
-        linkRepository.save(testLink);
-        linkRepository.save(testLink);
+
+        Link link1 = new Link()
+                .setUrl(new URI("http://localhost:8080/1"))
+                .setChat(testChat)
+                .setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+        Link link2 = new Link()
+                .setUrl(new URI("http://localhost:8080/2"))
+                .setChat(testChat)
+                .setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+        linkRepository.save(link1);
+        linkRepository.save(link2);
 
         Optional<Chat> savingChat = chatRepository.findByChatId(testChat.getChatId());
 
