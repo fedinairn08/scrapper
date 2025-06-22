@@ -1,11 +1,11 @@
 FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /opt/app
 
-COPY gradle ./gradle
-COPY gradlew .
-COPY gradle.properties .
-COPY settings.gradle.kts .
-COPY build.gradle.kts .
+COPY ../gradle ./gradle
+COPY ../gradlew .
+COPY ../gradle.properties .
+COPY ../settings.gradle.kts .
+COPY ../build.gradle.kts .
 
 RUN ./gradlew dependencies
 
