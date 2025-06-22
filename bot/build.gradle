@@ -25,6 +25,7 @@ dependencies {
 	implementation project(':link-parser')
 	implementation project(':scrapper')
 	implementation 'org.springframework.boot:spring-boot-starter-amqp:3.5.0'
+    implementation 'org.apache.maven.plugins:maven-checkstyle-plugin:3.6.0'
 }
 
 tasks.named('test') {
