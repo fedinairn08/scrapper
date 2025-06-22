@@ -7,8 +7,6 @@ COPY gradle ./gradle
 COPY bot/build.gradle ./bot/
 COPY link-parser/build.gradle ./link-parser/
 
-RUN gradle downloadDependencies
-
 COPY . .
 
 RUN gradle :bot:build --no-daemon
