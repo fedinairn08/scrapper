@@ -1,25 +1,22 @@
-FROM eclipse-temurin:17-jdk-alpine AS builder
-WORKDIR /opt/app
+FROM gradle:8.4-jdk21-alpine AS builder
 
-COPY ../gradle ./gradle
-COPY ../gradlew .
-COPY ../gradle.properties .
-COPY ../settings.gradle.kts .
-COPY ../build.gradle.kts .
+WORKDIR /app
 
-RUN ./gradlew dependencies
-
+COPY build.gradle settings.gradle ./
+COPY gradle ./gradle
 COPY scrapper ./scrapper
 COPY link-parser ./link-parser
 COPY bot ./bot
 
-RUN chmod +x ./gradlew && \
-    ./gradlew build --no-daemon --no-build-cache --parallel -p scrapper
+RUN gradle :scrapper:dependencies --no-daemon
 
-FROM eclipse-temurin:17-jre-alpine
+COPY . .
 
-WORKDIR /opt/app
+RUN gradle :scrapper:build --no-daemon -x test
 
-COPY --from=builder /opt/app/scrapper/build/libs/*.jar ./app.jar
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY --from=builder /app/scrapper/build/libs/scrapper-*.jar ./app.jar
+
+CMD ["java", "-jar", "app.jar"]
