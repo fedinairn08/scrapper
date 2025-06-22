@@ -17,6 +17,13 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
+import scrapper.scrapper.repository.jpa.JpaChatRepository;
+import scrapper.scrapper.repository.jpa.JpaGitHubInfoRepository;
+import scrapper.scrapper.repository.jpa.JpaLinkRepository;
+import scrapper.scrapper.service.ChatService;
+import scrapper.scrapper.service.LinkService;
+import scrapper.scrapper.service.jpaImpl.JpaChatService;
+import scrapper.scrapper.service.jpaImpl.JpaLinkService;
 
 import javax.sql.DataSource;
 import java.io.File;
@@ -82,6 +89,28 @@ public abstract class IntegrationEnvironment {
         registry.add("spring.datasource.url", POSTGRE_SQL_CONTAINER::getJdbcUrl);
         registry.add("spring.datasource.username", POSTGRE_SQL_CONTAINER::getUsername);
         registry.add("spring.datasource.password", POSTGRE_SQL_CONTAINER::getPassword);
+    }
+
+    @Configuration
+    public static class JpaIntegrationEnvironmentConfiguration {
+        @Bean
+        public DataSource dataSource() {
+            return TEST_DATA_SOURCE;
+        }
+
+        @Bean
+        public ChatService jpaChatService(JpaChatRepository jpaChatRepository, LinkService linkService) {
+            return new JpaChatService(jpaChatRepository, linkService);
+        }
+
+        @Bean
+        public LinkService jpaLinkService(
+                JpaLinkRepository jpaLinkRepository,
+                JpaGitHubInfoRepository jpaGitHubInfoRepository,
+                JpaChatRepository jpaChatRepository
+        ) {
+            return new JpaLinkService(jpaLinkRepository, jpaGitHubInfoRepository, jpaChatRepository);
+        }
     }
 
     @Configuration
