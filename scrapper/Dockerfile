@@ -1,14 +1,17 @@
-FROM eclipse-temurin:17-jdk-alpine as builder
+FROM eclipse-temurin:17-jdk-alpine AS builder
 WORKDIR /opt/app
+
+COPY gradle ./gradle
+COPY gradlew .
+COPY gradle.properties .
+COPY settings.gradle.kts .
+COPY build.gradle.kts .
+
+RUN ./gradlew dependencies
 
 COPY scrapper ./scrapper
 COPY link-parser ./link-parser
 COPY bot ./bot
-
-COPY settings.gradle.kts build.gradle.kts ./
-COPY gradle.properties ./gradle.properties
-COPY gradle ./gradle
-COPY .gitignore ./
 
 RUN chmod +x ./gradlew && \
     ./gradlew build --no-daemon --no-build-cache --parallel -p scrapper
