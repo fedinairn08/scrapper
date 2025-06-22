@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.13_6-jdk-alpine AS BUILDER
+FROM eclipse-temurin:17-jdk-alpine as builder
 WORKDIR /opt/app
 
 COPY scrapper ./scrapper
@@ -13,7 +13,7 @@ COPY .gitignore ./
 RUN chmod +x ./gradlew && \
     ./gradlew build --no-daemon --no-build-cache --parallel -p bot
 
-FROM eclipse-temurin:17.0.13_6-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /opt/app
 
