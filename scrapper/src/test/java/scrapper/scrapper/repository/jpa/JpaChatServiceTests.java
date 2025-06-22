@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfigurati
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scrapper.scrapper.entity.Chat;
@@ -26,8 +27,13 @@ public class JpaChatServiceTests {
     @Autowired
     private ChatService jpaChatService;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @BeforeEach
     public void setTestChat() {
+        jdbcTemplate.update("DELETE FROM chat");
+
         testChat = new Chat()
                 .setChatId(1L);
     }
