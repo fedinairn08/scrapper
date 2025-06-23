@@ -33,7 +33,7 @@ management:
         tags:
             application: ${spring.application.name}
     server:
-        port: 8102
+        port: 8090
     endpoints:
         web:
             base-path: /
