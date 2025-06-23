@@ -94,7 +94,7 @@ services:
       image: prom/prometheus:latest
       volumes:
           - ./prometheus.yml:/etc/prometheus/prometheus.yml
-          - ./volumes/prometheus:/prometheus
+          - ../volumes/prometheus:/prometheus
       command:
           - '--config.file=/etc/prometheus/prometheus.yml'
           - '--storage.tsdb.path=/prometheus'
@@ -107,9 +107,9 @@ services:
           - "9090:9090"
 
   grafana:
-      image: grafana/grafana-oss
+      build: './migrations/grafana'
       volumes:
-          - ./volumes/grafana:/var/lib/grafana
+          - ../volumes/grafana:/var/lib/grafana
       environment:
           - GF_SECURITY_ADMIN_USER=admin
           - GF_SECURITY_ADMIN_PASSWORD=admin
