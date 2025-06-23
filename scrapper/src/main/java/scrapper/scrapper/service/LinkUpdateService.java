@@ -16,7 +16,7 @@ public class LinkUpdateService {
 
     private final ScrapperQueueProducer scrapperQueueProducer;
 
-    public void sendLinkUpdate(LinkUpdateRequest updateRequest) {
+    public void sendLinkUpdate(final LinkUpdateRequest updateRequest) {
         if (applicationConfig.useQueue()) {
             scrapperQueueProducer.send(updateRequest);
         } else {

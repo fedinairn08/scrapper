@@ -18,19 +18,19 @@ import scrapper.scrapper.service.jpaImpl.JpaLinkService;
 public class JpaAccessConfiguration {
 
     @Bean
-    public ChatService chatService(JpaChatRepository jpaChatRepository, LinkService linkService) {
+    public ChatService chatService(final JpaChatRepository jpaChatRepository, final LinkService linkService) {
         return new JpaChatService(jpaChatRepository, linkService);
     }
 
     @Bean
-    public LinkService linkService(JpaLinkRepository jpaLinkRepository,
-                                   JpaGitHubInfoRepository jpaGitHubInfoRepository,
-                                   JpaChatRepository jpaChatRepository) {
+    public LinkService linkService(final JpaLinkRepository jpaLinkRepository,
+                                   final JpaGitHubInfoRepository jpaGitHubInfoRepository,
+                                   final JpaChatRepository jpaChatRepository) {
         return new JpaLinkService(jpaLinkRepository, jpaGitHubInfoRepository, jpaChatRepository);
     }
 
     @Bean
-    public GitHubInfoService gitHubInfoService(JpaGitHubInfoRepository jpaGitHubInfoRepository) {
+    public GitHubInfoService gitHubInfoService(final JpaGitHubInfoRepository jpaGitHubInfoRepository) {
         return new JpaGitHubInfoService(jpaGitHubInfoRepository);
     }
 }

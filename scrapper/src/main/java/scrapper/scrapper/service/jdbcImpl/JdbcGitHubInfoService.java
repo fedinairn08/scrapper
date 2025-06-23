@@ -12,17 +12,17 @@ public class JdbcGitHubInfoService implements GitHubInfoService {
     private final GitHubInfoRepository gitHubInfoRepository;
 
     @Override
-    public void add(Link link) {
+    public void add(final Link link) {
         gitHubInfoRepository.save(new GitHubInfo().setLink(link));
     }
 
     @Override
-    public GitHubInfo find(Long linkId) {
+    public GitHubInfo find(final Long linkId) {
         return gitHubInfoRepository.find(linkId);
     }
 
     @Override
-    public void update(Long id, int lastCommitCount, int lastBranchCount) {
+    public void update(final Long id, final int lastCommitCount, final int lastBranchCount) {
         gitHubInfoRepository.update(id, lastCommitCount, lastBranchCount);
     }
 }

@@ -16,7 +16,7 @@ public class StackOverflowApiService extends ApiService {
     private final StackOverflowClient stackOverflowClient;
 
     @Override
-    public String checkUpdate(LinkParserResult linkParserResult, Link link) {
+    public String checkUpdate(final LinkParserResult linkParserResult, final Link link) {
         if (linkParserResult instanceof StackOverflowResult stackOverflowResult) {
             StackOverflowQuestionResponse response = stackOverflowClient.getQuestionInfo(
                     stackOverflowResult.questionId()

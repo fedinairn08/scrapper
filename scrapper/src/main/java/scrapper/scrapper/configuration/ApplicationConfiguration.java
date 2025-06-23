@@ -16,12 +16,12 @@ import java.time.Duration;
 public class ApplicationConfiguration {
 
     @Bean
-    public Scheduler scheduler(@Value("${app.scheduler.interval}") Duration interval) {
+    public Scheduler scheduler(@Value("${app.scheduler.interval}") final Duration interval) {
         return new Scheduler(interval);
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+    public JdbcTemplate jdbcTemplate(final DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 }

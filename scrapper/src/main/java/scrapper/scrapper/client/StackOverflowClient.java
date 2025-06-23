@@ -11,7 +11,7 @@ public class StackOverflowClient {
 
     private final RestClient stackOverflowRestClient;
 
-    public StackOverflowQuestionResponse getQuestionInfo(Long id) {
+    public StackOverflowQuestionResponse getQuestionInfo(final Long id) {
         return stackOverflowRestClient.get()
                 .uri("/questions/{id}?site=stackoverflow", id)
                 .retrieve()

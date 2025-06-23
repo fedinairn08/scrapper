@@ -18,7 +18,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleException(Exception ex, WebRequest request) {
+    public ResponseEntity<ApiErrorResponse> handleException(final Exception ex, final WebRequest request) {
         return ResponseEntity.badRequest().body(
                 new ApiErrorResponse(
                     request.getDescription(false),
@@ -35,9 +35,10 @@ public class GlobalExceptionHandler {
             LinkAlreadyExistsException.class,
             LinkNotFoundException.class
     })
-    public ResponseEntity<ApiErrorResponse> handleCustomException(RuntimeException ex) {
-        HttpStatus status = ex instanceof ChatNotFoundException ||
-                ex instanceof LinkNotFoundException
+    public ResponseEntity<ApiErrorResponse> handleCustomException(final RuntimeException ex) {
+        HttpStatus status = ex instanceof ChatNotFoundException
+            ||
+            ex instanceof LinkNotFoundException
                 ? HttpStatus.NOT_FOUND
                 : HttpStatus.BAD_REQUEST;
 

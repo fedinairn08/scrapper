@@ -23,7 +23,7 @@ public class GitHubInfoRepositoryJdbcImpl implements GitHubInfoRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void save(GitHubInfo gitHubInfo) {
+    public void save(final GitHubInfo gitHubInfo) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -40,7 +40,7 @@ public class GitHubInfoRepositoryJdbcImpl implements GitHubInfoRepository {
     }
 
     @Override
-    public GitHubInfo find(Long linkId) {
+    public GitHubInfo find(final Long linkId) {
         String sql = "SELECT * FROM github_info WHERE link_id = ?";
 
         try {
@@ -51,20 +51,21 @@ public class GitHubInfoRepositoryJdbcImpl implements GitHubInfoRepository {
     }
 
     @Override
-    public void update(Long id, int lastCommitCount, int lastBranchCount) {
+    public void update(final Long id, final int lastCommitCount, final int lastBranchCount) {
         String sql = "UPDATE github_info SET last_commit_count = ?, last_branch_count = ? WHERE id = ?";
         jdbcTemplate.update(sql, lastCommitCount, lastBranchCount, id);
     }
 
-    private GitHubInfo mapRowToGitHubInfo(ResultSet rs, int rowNum) throws SQLException {
+    private GitHubInfo mapRowToGitHubInfo(final ResultSet rs, final int rowNum) throws SQLException {
         Long id = rs.getObject("id", Long.class);
         Integer lastCommitCount = rs.getObject("last_commit_count", Integer.class);
         Integer lastBranchCount = rs.getObject("last_branch_count", Integer.class);
         Long linkId = rs.getObject("link_id", Long.class);
 
         Link link = jdbcTemplate.queryForObject(
-                "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
-                        "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat WHERE l.id = ?",
+                "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update "
+                    +
+                    "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat WHERE l.id = ?",
                 this::mapRowToLinkWithChat,
                 linkId
         );
@@ -72,7 +73,7 @@ public class GitHubInfoRepositoryJdbcImpl implements GitHubInfoRepository {
         return new GitHubInfo(id, lastCommitCount, lastBranchCount, link);
     }
 
-    private Link mapRowToLinkWithChat(ResultSet rs, int rowNum) throws SQLException {
+    private Link mapRowToLinkWithChat(final ResultSet rs, final int rowNum) throws SQLException {
         try {
             String rawUrl = rs.getString("url");
             String cleanedUrl = rawUrl != null ? rawUrl.replaceAll("^\"|\"$", "") : "";

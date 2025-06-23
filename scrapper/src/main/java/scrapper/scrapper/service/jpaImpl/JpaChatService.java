@@ -20,13 +20,13 @@ public class JpaChatService implements ChatService {
     private final LinkService linkService;
 
     @Override
-    public void register(long chatId) {
+    public void register(final long chatId) {
         jpaChatRepository.save(new Chat().setChatId(chatId));
     }
 
     @Override
     @Transactional
-    public void unregister(long chatId) {
+    public void unregister(final long chatId) {
         Chat chat = jpaChatRepository.findByChatId(chatId);
 
         List<Link> linksToRemove = new ArrayList<>(chat.getLinks());
@@ -39,7 +39,7 @@ public class JpaChatService implements ChatService {
     }
 
     @Override
-    public Optional<Chat> getByChatId(long tgChatId) {
+    public Optional<Chat> getByChatId(final long tgChatId) {
         return Optional.ofNullable(jpaChatRepository.findByChatId(tgChatId));
     }
 }

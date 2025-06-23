@@ -23,7 +23,7 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Link save(Link link) {
+    public Link save(final Link link) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -41,38 +41,40 @@ public class LinkRepositoryJdbcImpl implements LinkRepository {
     }
 
     @Override
-    public void remove(Long linkId) {
+    public void remove(final Long linkId) {
         jdbcTemplate.update("DELETE FROM link WHERE id = ?", linkId);
     }
 
     @Override
     public List<Link> findAll() {
-        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
-                "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat";
+        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update "
+            +
+            "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat";
 
         return jdbcTemplate.query(sql, this::mapRowToLinkWithChat);
     }
 
     @Override
-    public void updateLastUpdate(Long linkId, Timestamp timeUpdate) {
+    public void updateLastUpdate(final Long linkId, final Timestamp timeUpdate) {
         String sql = "UPDATE link SET last_update = ? WHERE id = ?";
         jdbcTemplate.update(sql, timeUpdate, linkId);
     }
 
     @Override
-    public List<Link> findAllOutdatedLinks(Timestamp timestamp) {
-        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
-                "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat WHERE l.last_update < ?";
+    public List<Link> findAllOutdatedLinks(final Timestamp timestamp) {
+        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update "
+            +
+            "FROM chat as c RIGHT JOIN link as l ON c.id = l.chat WHERE l.last_update < ?";
 
         return jdbcTemplate.query(sql, this::mapRowToLinkWithChat, timestamp);
     }
 
     @Override
-    public void deleteAllByChat_ChatId(Long chatId) {
+    public void deleteAllByChat_ChatId(final Long chatId) {
         jdbcTemplate.update("DELETE FROM link WHERE chat_id = ?", chatId);
     }
 
-    private Link mapRowToLinkWithChat(ResultSet rs, int rowNum) throws SQLException {
+    private Link mapRowToLinkWithChat(final ResultSet rs, final int rowNum) throws SQLException {
         try {
             String rawUrl = rs.getString("url");
             String cleanedUrl = rawUrl != null ? rawUrl.replaceAll("^\"|\"$", "") : "";

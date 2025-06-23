@@ -19,7 +19,7 @@ public class GitHubApiService extends ApiService {
     private final GitHubInfoService gitHubInfoService;
 
     @Override
-    public String checkUpdate(LinkParserResult linkParserResult, Link link) {
+    public String checkUpdate(final LinkParserResult linkParserResult, final Link link) {
         if (linkParserResult instanceof GitHubResult gitHubResult) {
             GitHubRepositoryResponse response = gitHubClient.getGitHubRepositoryInfo(
                     gitHubResult.user(),

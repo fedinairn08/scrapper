@@ -7,7 +7,7 @@ public abstract class ApiService {
 
     protected ApiService nextService;
 
-    public ApiService setNextService(ApiService nextService) {
+    public ApiService setNextService(final ApiService nextService) {
         this.nextService = nextService;
         return nextService;
     }

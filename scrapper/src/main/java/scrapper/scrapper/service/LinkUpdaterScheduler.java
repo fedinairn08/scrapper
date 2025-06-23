@@ -38,7 +38,7 @@ public class LinkUpdaterScheduler {
         }
     }
 
-    public void updateLinks(List<Link> links) {
+    public void updateLinks(final List<Link> links) {
         for (Link link: links) {
             LinkParserResult linkParserResult = linkParser.parseUrl(link.getUrl());
             String description = apiService.checkUpdate(linkParserResult, link);

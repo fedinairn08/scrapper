@@ -11,7 +11,7 @@ import scrapper.scrapper.dto.request.LinkUpdateRequest;
 public class BotClient {
     private final RestClient botRestClient;
 
-    public void updateLink(LinkUpdateRequest linkUpdateRequest) {
+    public void updateLink(final LinkUpdateRequest linkUpdateRequest) {
 
         botRestClient.post()
                 .uri("/updates")

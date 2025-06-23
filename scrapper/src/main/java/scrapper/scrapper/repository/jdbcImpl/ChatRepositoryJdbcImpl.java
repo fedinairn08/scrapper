@@ -21,7 +21,7 @@ public class ChatRepositoryJdbcImpl implements ChatRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Chat save(Chat chat) {
+    public Chat save(final Chat chat) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -36,23 +36,25 @@ public class ChatRepositoryJdbcImpl implements ChatRepository {
     }
 
     @Override
-    public void remove(Long chatId) {
+    public void remove(final Long chatId) {
         jdbcTemplate.update("DELETE FROM chat WHERE id = ?", chatId);
     }
 
     @Override
     public List<Chat> findAll() {
-        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
-                "FROM chat as c LEFT JOIN link as l ON c.id = l.chat";
+        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update "
+            +
+            "FROM chat as c LEFT JOIN link as l ON c.id = l.chat";
 
 
         return jdbcTemplate.query(sql, this::mapRowToChatWithLinks);
     }
 
     @Override
-    public Optional<Chat> findByChatId(Long tgChatId) {
-        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update " +
-                "FROM chat as c LEFT JOIN link as l ON c.id = l.chat WHERE c.chat_id = ?";
+    public Optional<Chat> findByChatId(final Long tgChatId) {
+        String sql = "SELECT c.id AS chat_id, c.chat_id as chat_tg_id, l.id as link_id, l.url, l.last_update "
+            +
+            "FROM chat as c LEFT JOIN link as l ON c.id = l.chat WHERE c.chat_id = ?";
 
         try {
             return Optional.of(jdbcTemplate.query(sql, rs -> {
@@ -65,7 +67,7 @@ public class ChatRepositoryJdbcImpl implements ChatRepository {
         }
     }
 
-    private List<Chat> mapRowToChatWithLinks(ResultSet rs) throws SQLException {
+    private List<Chat> mapRowToChatWithLinks(final ResultSet rs) throws SQLException {
         Map<Long, Chat> chatMap = new LinkedHashMap<>();
 
         while (rs.next()) {

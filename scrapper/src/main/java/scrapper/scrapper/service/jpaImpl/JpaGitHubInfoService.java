@@ -12,17 +12,17 @@ public class JpaGitHubInfoService implements GitHubInfoService {
     private final JpaGitHubInfoRepository jpaGitHubInfoRepository;
 
     @Override
-    public void add(Link link) {
+    public void add(final Link link) {
         jpaGitHubInfoRepository.save(new GitHubInfo().setLink(link));
     }
 
     @Override
-    public GitHubInfo find(Long linkId) {
+    public GitHubInfo find(final Long linkId) {
         return jpaGitHubInfoRepository.findByLink_Id(linkId);
     }
 
     @Override
-    public void update(Long id, int lastCommitCount, int lastBranchCount) {
+    public void update(final Long id, final int lastCommitCount, final int lastBranchCount) {
         jpaGitHubInfoRepository.save(
                 jpaGitHubInfoRepository.findById(id)
                         .orElseThrow(() -> new RuntimeException("Link with id [" + id + "] not found"))

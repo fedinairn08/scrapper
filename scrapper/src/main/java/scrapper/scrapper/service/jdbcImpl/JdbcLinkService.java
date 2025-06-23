@@ -20,7 +20,7 @@ public class JdbcLinkService implements LinkService {
     private final ChatService chatService;
 
     @Override
-    public Link add(long tgChatId, URI url) {
+    public Link add(final long tgChatId, final URI url) {
         return linkRepository.save(
                 new Link().
                 setUrl(url).
@@ -29,7 +29,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public void remove(long tgChatId, URI url) {
+    public void remove(final long tgChatId, final URI url) {
         Optional<Link> resultLink = chatService.getByChatId(tgChatId).get().getLinks()
                 .stream()
                 .filter(link -> url.equals(link.getUrl()))
@@ -44,7 +44,7 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public List<Link> listAll(long tgChatId) {
+    public List<Link> listAll(final long tgChatId) {
         Optional<Chat> chat = chatService.getByChatId(tgChatId);
 
         if (!chat.get().getLinks().isEmpty()) {
@@ -55,17 +55,17 @@ public class JdbcLinkService implements LinkService {
     }
 
     @Override
-    public void updateLastUpdate(Long linkId, Timestamp timeUpdate) {
+    public void updateLastUpdate(final Long linkId, final Timestamp timeUpdate) {
         linkRepository.updateLastUpdate(linkId, timeUpdate);
     }
 
     @Override
-    public List<Link> findAllOutdatedLinks(Timestamp timestamp) {
+    public List<Link> findAllOutdatedLinks(final Timestamp timestamp) {
         return linkRepository.findAllOutdatedLinks(timestamp);
     }
 
     @Override
-    public void deleteAllByChat_ChatId(Long chatId) {
+    public void deleteAllByChat_ChatId(final Long chatId) {
         linkRepository.deleteAllByChat_ChatId(chatId);
     }
 }

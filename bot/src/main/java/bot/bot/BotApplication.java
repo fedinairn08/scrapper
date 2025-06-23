@@ -14,5 +14,4 @@ public class BotApplication {
 	public static void main(final String[] args) {
 		SpringApplication.run(BotApplication.class, args);
 	}
-
 }

@@ -22,33 +22,33 @@ import scrapper.scrapper.service.jdbcImpl.JdbcLinkService;
 public class JdbcAccessConfiguration {
 
     @Bean
-    public LinkRepository linkRepository(JdbcTemplate jdbcTemplate) {
+    public LinkRepository linkRepository(final JdbcTemplate jdbcTemplate) {
         return new LinkRepositoryJdbcImpl(jdbcTemplate);
     }
 
     @Bean
-    public ChatRepository chatRepository(JdbcTemplate jdbcTemplate) {
+    public ChatRepository chatRepository(final JdbcTemplate jdbcTemplate) {
         return new ChatRepositoryJdbcImpl(jdbcTemplate);
     }
 
     @Bean
-    public GitHubInfoRepository gitHubInfoRepository(JdbcTemplate jdbcTemplate) {
+    public GitHubInfoRepository gitHubInfoRepository(final JdbcTemplate jdbcTemplate) {
         return new GitHubInfoRepositoryJdbcImpl(jdbcTemplate);
     }
 
     @Bean
-    public ChatService chatService(ChatRepository chatRepository) {
+    public ChatService chatService(final ChatRepository chatRepository) {
         return new JdbcChatService(chatRepository);
     }
 
     @Bean
-    public LinkService linkService(LinkRepository linkRepository,
-                                   ChatService chatService) {
+    public LinkService linkService(final LinkRepository linkRepository,
+                                   final ChatService chatService) {
         return new JdbcLinkService(linkRepository, chatService);
     }
 
     @Bean
-    public GitHubInfoService gitHubInfoService(GitHubInfoRepository gitHubInfoRepository) {
+    public GitHubInfoService gitHubInfoService(final GitHubInfoRepository gitHubInfoRepository) {
         return new JdbcGitHubInfoService(gitHubInfoRepository);
     }
 }

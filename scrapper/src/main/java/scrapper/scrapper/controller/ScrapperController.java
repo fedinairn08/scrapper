@@ -25,33 +25,33 @@ public class ScrapperController {
     private final LinkMapper linkMapper;
 
     @PostMapping("/tg-chat/{id}")
-    public ResponseEntity<Void> registerChat(@PathVariable Long id) {
+    public ResponseEntity<Void> registerChat(@PathVariable final Long id) {
         chatService.register(id);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/tg-chat/{id}")
-    public ResponseEntity<Void> deleteChat(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteChat(@PathVariable final Long id) {
         chatService.unregister(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/links")
-    public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") Long tgChatId) {
+    public ResponseEntity<ListLinksResponse> getLinks(@RequestHeader("Tg-Chat-Id") final Long tgChatId) {
         List<Link> links = linkService.listAll(tgChatId);
         return ResponseEntity.ok(linkMapper.toListLinksResponse(links));
     }
 
     @PostMapping("/links")
-    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") Long tgChatId,
-                                                @RequestBody AddLinkRequest request) {
+    public ResponseEntity<LinkResponse> addLink(@RequestHeader("Tg-Chat-Id") final Long tgChatId,
+                                                @RequestBody final AddLinkRequest request) {
         Link link = linkService.add(tgChatId, request.link());
         return ResponseEntity.ok(linkMapper.toLinkResponse(link));
     }
 
     @DeleteMapping("/links/delete")
-    public ResponseEntity<Void> removeLink(@RequestHeader("Tg-Chat-Id") Long tgChatId,
-                                           @RequestParam("url") URI url) {
+    public ResponseEntity<Void> removeLink(@RequestHeader("Tg-Chat-Id") final Long tgChatId,
+                                           @RequestParam("url") final URI url) {
         linkService.remove(tgChatId, url);
         return ResponseEntity.ok().build();
     }

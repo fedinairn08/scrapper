@@ -21,7 +21,7 @@ public class GitHubClient {
     @Value("${api.github.token}")
     private String githubToken;
 
-    public GitHubRepositoryResponse getGitHubRepositoryInfo(String username, String repositoryName) {
+    public GitHubRepositoryResponse getGitHubRepositoryInfo(final String username, final String repositoryName) {
         return gitHubRestClient.get()
                 .uri("/repos/{username}/{repositoryName}", username, repositoryName)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + githubToken)
@@ -29,7 +29,7 @@ public class GitHubClient {
                 .body(GitHubRepositoryResponse.class);
     }
 
-    public int getCommitCount(String username, String repositoryName) {
+    public int getCommitCount(final String username, final String repositoryName) {
         ResponseEntity<Void> response = gitHubRestClient.get()
                 .uri("/repos/{username}/{repositoryName}/commits?per_page=1", username, repositoryName)
                 .retrieve()
@@ -38,7 +38,7 @@ public class GitHubClient {
         return extractCommitCountFromHeaders(response.getHeaders());
     }
 
-    public int getBranchCount(String username, String repositoryName) {
+    public int getBranchCount(final String username, final String repositoryName) {
         ResponseEntity<Void> response = gitHubRestClient.get()
                 .uri("/repos/{username}/{repositoryName}/branches?per_page=1", username, repositoryName)
                 .retrieve()
@@ -47,7 +47,7 @@ public class GitHubClient {
         return extractBranchCountFromHeaders(response.getHeaders());
     }
 
-    private int extractBranchCountFromHeaders(HttpHeaders headers) {
+    private int extractBranchCountFromHeaders(final HttpHeaders headers) {
         String linkHeader = headers.getFirst(HttpHeaders.LINK);
         if (linkHeader != null) {
             Pattern pattern = Pattern.compile("page=(\\d+)>; rel=\"last\"");
@@ -60,7 +60,7 @@ public class GitHubClient {
 
     }
 
-    private int extractCommitCountFromHeaders(HttpHeaders headers) {
+    private int extractCommitCountFromHeaders(final HttpHeaders headers) {
         String linkHeader = headers.getFirst(HttpHeaders.LINK);
         Pattern pattern = Pattern.compile("page=(\\d+)>; rel=\"last\"");
         Matcher matcher = pattern.matcher(linkHeader);
@@ -71,7 +71,7 @@ public class GitHubClient {
         return getCommitCountFromBody(headers);
     }
 
-    private int getCommitCountFromBody(HttpHeaders headers) {
+    private int getCommitCountFromBody(final HttpHeaders headers) {
         String path = headers.getFirst("X-GitHub-Request-Id");
 
         List<?> commits = gitHubRestClient.get()

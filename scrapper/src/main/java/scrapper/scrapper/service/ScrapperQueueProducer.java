@@ -14,7 +14,7 @@ public class ScrapperQueueProducer {
 
     private final RabbitMQConfig rabbitMQConfig;
 
-    public void send(LinkUpdateRequest update) {
+    public void send(final LinkUpdateRequest update) {
         rabbitTemplate.convertAndSend(
                 rabbitMQConfig.exchange(),
                 rabbitMQConfig.queue(),

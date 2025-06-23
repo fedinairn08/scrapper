@@ -23,7 +23,7 @@ public class JpaLinkService implements LinkService {
     private final JpaChatRepository jpaChatRepository;
 
     @Override
-    public Link add(long tgChatId, URI url) {
+    public Link add(final long tgChatId, final URI url) {
         return jpaLinkRepository.save(
                 new Link()
                 .setChat(jpaChatRepository.findByChatId(tgChatId))
@@ -33,7 +33,7 @@ public class JpaLinkService implements LinkService {
 
     @Transactional
     @Override
-    public void remove(long tgChatId, URI url) {
+    public void remove(final long tgChatId, final URI url) {
         Chat chat = jpaChatRepository.findByChatId(tgChatId);
 
         Link linkToRemove = chat.getLinks().stream()
@@ -49,12 +49,12 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    public List<Link> listAll(long tgChatId) {
+    public List<Link> listAll(final long tgChatId) {
         return jpaChatRepository.findByChatId(tgChatId).getLinks();
     }
 
     @Override
-    public void updateLastUpdate(Long linkId, Timestamp timeUpdate) {
+    public void updateLastUpdate(final Long linkId, final Timestamp timeUpdate) {
         jpaLinkRepository.save(
                 jpaLinkRepository.findById(linkId)
                         .orElseThrow(() -> new RuntimeException("Link with id [" + linkId + "] not found"))
@@ -63,12 +63,12 @@ public class JpaLinkService implements LinkService {
     }
 
     @Override
-    public List<Link> findAllOutdatedLinks(Timestamp timestamp) {
+    public List<Link> findAllOutdatedLinks(final Timestamp timestamp) {
         return jpaLinkRepository.findAllByLastUpdateLessThan(timestamp);
     }
 
     @Override
-    public void deleteAllByChat_ChatId(Long chatId) {
+    public void deleteAllByChat_ChatId(final Long chatId) {
         jpaLinkRepository.deleteAllByChat_ChatId(chatId);
     }
 }

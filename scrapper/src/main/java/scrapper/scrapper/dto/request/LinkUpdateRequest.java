@@ -11,4 +11,5 @@ public record LinkUpdateRequest(
         String description,
 
         List<Long> tgChatIds
-) {}
+) {
+}
